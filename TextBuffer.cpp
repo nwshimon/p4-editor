@@ -7,8 +7,8 @@
 #include <iostream>
 #include <iterator> //std::bidirectional_iterator_tag
 #include <cassert>  //assert
+#include <list>
 #include "List.hpp"
-#include "line.cpp"
 
 class TextBuffer {
   using CharList = std::list<char>;

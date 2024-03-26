@@ -54,7 +54,7 @@ private:
 public:
   //EFFECTS: Creates an empty text buffer. Its cursor is at the past-the-end
   //         position, with row 1, column 0, and index 0.
-  TextBuffer();
+  TextBuffer() : row(1), column(0), index(0) { }
 
   //MODIFIES: *this
   //EFFECTS:  Moves the cursor one position forward and returns true,

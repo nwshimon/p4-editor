@@ -44,11 +44,12 @@ public:
 
   //EFFECTS:  inserts datum into the front of the list
   void push_front(const T &datum) {
-    first = p;
-    p->next = first;
-    p->next = first -> next;
     Node *p = new Node;
     p->datum = datum;
+    p->next = first;
+    first = p;
+    // Node *p = new Node;
+    // p->datum = datum;
     ++_size;
   }
 
@@ -98,6 +99,22 @@ public:
   // will work correctly without defining these, you should omit them. A user
   // of the class must be able to create, copy, assign, and destroy Lists.
 
+// DEFAULT LIST CONSTRUCTOR
+  List() {
+    assert(false);
+  }
+
+// COPY LIST CONSTRUCTOR
+  List(const List &other) {
+    assert(false);
+  }
+
+// LIST DESTRUCTOR
+  ~List() {
+    clear();
+  }
+
+
 private:
   //a private type
   struct Node {
@@ -121,19 +138,28 @@ private:
 public:
   ////////////////////////////////////////
   class Iterator {
+    friend class List;
   public:
     //OVERVIEW: Iterator interface to List
 
     // Add a default constructor here. The default constructor must set both
     // pointer members to null pointers.
-    Iterator() : first(nullptr), last(nullptr)
+    Iterator()
+      : node_ptr(nullptr), list_ptr(nullptr) { }
 
 
     // Add custom implementations of the destructor, copy constructor, and
     // overloaded assignment operator, if appropriate. If these operations
     // will work correctly without defining these, you should omit them. A user
     // of the class must be able to copy, assign, and destroy Iterators.
+    ~Iterator() {
+      assert(false);
+    }
 
+    Iterator(const Iterator &other)
+      : node_ptr(nullptr), list_ptr(nullptr) {
+        // copy_all(other);
+      }
 
 
     // Your iterator should implement the following public operators:
@@ -154,8 +180,44 @@ public:
     //     violates the REQURES clause.
     // Note: comparing both the list and node pointers should be
     // sufficient to meet these requirements.
+    Iterator& operator*() {
+      assert(false);
+    }
 
+    // prefix
+    Iterator& operator++() {
+      assert(false);
+    }
 
+    Iterator& operator++(int /*postfix*/) {
+      Iterator copy = *this;
+      // operator++(); // this is from lec
+      return copy;
+    }
+    
+    // two default-constructed iterators must compare equal 
+    // a default-constructed iterator must compare unequal to an
+      //   iterator obtained from a list, even if it is the end iterator
+    // comparing iterators obtained from different lists results in
+      //   undefined behavior
+    Iterator& operator==(const Iterator& other) const {
+      assert(false);
+    } 
+
+    // two iterators to different locations in the same list must
+      // compare to unequal
+    // a default-constructed iterator must compare unequal to an
+      // iterator obtained from a list, even if it is the end iterator
+    // comparing iterators obtained from different lists results in
+      //   undefined behavior
+
+    // Iterator& operator!=(auto) {
+    //   assert(false)
+    // }
+
+    Iterator& operator!=(const Iterator& other) const {
+      assert(false);
+    }
 
     // Type aliases required to work with STL algorithms. Do not modify these.
     using iterator_category = std::bidirectional_iterator_tag;
@@ -207,28 +269,38 @@ public:
 
 
     // construct an Iterator at a specific position in the given List
-    Iterator(const List *lp, Node *np);
+    Iterator(const List *lp, Node *np) {
+      assert(false);
+    }
 
   };//List::Iterator
   ////////////////////////////////////////
 
   // return an Iterator pointing to the first element
-  Iterator begin() const;
+  Iterator begin() const {
+    return Iterator(first);
+  }
 
   // return an Iterator pointing to "past the end"
-  Iterator end() const;
+  Iterator end() const {
+    return Iterator(last);
+  }
 
   //REQUIRES: i is a valid, dereferenceable iterator associated with this list
   //MODIFIES: may invalidate other list iterators
   //EFFECTS: Removes a single element from the list container.
   //         Returns An iterator pointing to the element that followed the
   //         element erased by the function call
-  Iterator erase(Iterator i);
+  Iterator erase(Iterator i) {
+    assert(false);
+  }
 
   //REQUIRES: i is a valid iterator associated with this list
   //EFFECTS: Inserts datum before the element at the specified position.
   //         Returns an iterator to the the newly inserted element.
-  Iterator insert(Iterator i, const T &datum);
+  Iterator insert(Iterator i, const T &datum) {
+    assert(false);
+  }
 
 };//List
 
