@@ -54,7 +54,8 @@ private:
 public:
   //EFFECTS: Creates an empty text buffer. Its cursor is at the past-the-end
   //         position, with row 1, column 0, and index 0.
-  TextBuffer() : row(1), column(0), index(0) { }
+  TextBuffer()
+    : row(1), column(0), index(0) { }
 
   //MODIFIES: *this
   //EFFECTS:  Moves the cursor one position forward and returns true,
@@ -62,7 +63,9 @@ public:
   //          in which case this does nothing and returns false.
   //NOTE:     Your implementation must update the row, column, and index
   //          if appropriate to maintain all invariants.
-  bool forward();
+  bool forward() {
+    assert(false);
+  }
 
   //MODIFIES: *this
   //EFFECTS:  Moves the cursor one position backward and returns true,
@@ -73,7 +76,9 @@ public:
   //          beginning of a line to the end of the previous one.
   //NOTE:     Your implementation must update the row, column, and index
   //          if appropriate to maintain all invariants.
-  bool backward();
+  bool backward() {
+    assert(false);
+  }
 
   //MODIFIES: *this
   //EFFECTS:  Inserts a character in the buffer before the cursor position.
@@ -82,7 +87,10 @@ public:
   //          The cursor remains in the same place as before the insertion.
   //NOTE:     Your implementation must update the row, column, and index
   //          if appropriate to maintain all invariants.
-  void insert(char c);
+  void insert(char c) {
+    assert(false);
+  }
+
 
   //MODIFIES: *this
   //EFFECTS:  Removes the character from the buffer that is at the cursor and
@@ -93,13 +101,19 @@ public:
   //          character was the last one in the buffer.
   //NOTE:     Your implementation must update the row, column, and index
   //          if appropriate to maintain all invariants.
-  bool remove();
+  bool remove() {
+    assert(false);
+  }
+
 
   //MODIFIES: *this
   //EFFECTS:  Moves the cursor to the start of the current row (column 0).
   //NOTE:     Your implementation must update the row, column, and index
   //          if appropriate to maintain all invariants.
-  void move_to_row_start();
+  void move_to_row_start() {
+    assert(false);
+  }
+
 
   //MODIFIES: *this
   //EFFECTS:  Moves the cursor to the end of the current row (the
@@ -107,7 +121,10 @@ public:
   //          position if the row is the last one in the buffer).
   //NOTE:     Your implementation must update the row, column, and index
   //          if appropriate to maintain all invariants.
-  void move_to_row_end();
+  void move_to_row_end() {
+    assert(false);
+  }
+
 
   //REQUIRES: new_column >= 0
   //MODIFIES: *this
@@ -118,7 +135,10 @@ public:
   //          the last one in the buffer).
   //NOTE:     Your implementation must update the row, column, and index
   //          if appropriate to maintain all invariants.
-  void move_to_column(int new_column);
+  void move_to_column(int new_column) {
+    assert(false);
+  }
+
 
   //MODIFIES: *this
   //EFFECTS:  Moves the cursor to the previous row, retaining the
@@ -130,7 +150,10 @@ public:
   //          not (i.e. if the cursor was already in the first row).
   //NOTE:     Your implementation must update the row, column, and index
   //          if appropriate to maintain all invariants.
-  bool up();
+  bool up() {
+    assert(false);
+  }
+
 
   //MODIFIES: *this
   //EFFECTS:  Moves the cursor to the next row, retaining the current
@@ -143,39 +166,66 @@ public:
   //          not (i.e. if the cursor was already in the last row).
   //NOTE:     Your implementation must update the row, column, and index
   //          if appropriate to maintain all invariants.
-  bool down();
+  bool down() {
+    assert(false);
+  }
+
 
   //EFFECTS:  Returns whether the cursor is at the past-the-end position.
-  bool is_at_end() const;
+  bool is_at_end() const {
+    assert(false);
+  }
+
 
   //REQUIRES: the cursor is not at the past-the-end position
   //EFFECTS:  Returns the character at the current cursor
-  char data_at_cursor() const;
+  char data_at_cursor() const {
+    assert(false);
+  }
+
 
   //EFFECTS:  Returns the row of the character at the current cursor.
-  int get_row() const;
+  int get_row() const {
+    assert(false);
+  }
+
 
   //EFFECTS:  Returns the column of the character at the current cursor.
-  int get_column() const;
+  int get_column() const {
+    assert(false);
+  }
+
 
   //EFFECTS:  Returns the index of the character at the current cursor
   //          with respect to the entire contents. If the cursor is at
   //          the past-the-end position, returns size() as the index.
-  int get_index() const;
+  int get_index() const {
+    assert(false);
+  }
+
 
   //EFFECTS:  Returns the number of characters in the buffer.
-  int size() const;
+  int size() const {
+    assert(false);
+  }
+
 
   //EFFECTS:  Returns the contents of the text buffer as a string.
   //HINT: Implement this using the string constructor that takes a
   //      begin and end iterator. You may use this implementation:
   //        return std::string(data.begin(), data.end());
-  std::string stringify() const;
+  std::string stringify() const {
+    assert(false);
+  }
+
 
   //EFFECTS: Computes the column of the cursor within the current row.
   //NOTE: This does not assume that the "column" member variable has
   //      a correct value (i.e. the row/column INVARIANT can be broken).
-  int compute_column() const;
+  int compute_column() const {
+    assert(false);
+  }
+
 };
 
 #endif // TEXTBUFFER_HPP

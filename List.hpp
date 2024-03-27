@@ -100,13 +100,13 @@ public:
   // of the class must be able to create, copy, assign, and destroy Lists.
 
 // DEFAULT LIST CONSTRUCTOR
-  List() {
-    assert(false);
-  }
+  List()
+   : next(nullptr), prev(nullptr), _size(0) { } // size of data should be 0
 
 // COPY LIST CONSTRUCTOR
-  List(const List &other) {
-    assert(false);
+  List(const List &other)
+    : next(nullptr), prev(nullptr) {
+    copy_all(List);
   }
 
 // LIST DESTRUCTOR
@@ -145,21 +145,7 @@ public:
     // Add a default constructor here. The default constructor must set both
     // pointer members to null pointers.
     Iterator()
-      : node_ptr(nullptr), list_ptr(nullptr) { }
-
-
-    // Add custom implementations of the destructor, copy constructor, and
-    // overloaded assignment operator, if appropriate. If these operations
-    // will work correctly without defining these, you should omit them. A user
-    // of the class must be able to copy, assign, and destroy Iterators.
-    ~Iterator() {
-      assert(false);
-    }
-
-    Iterator(const Iterator &other)
-      : node_ptr(nullptr), list_ptr(nullptr) {
-        // copy_all(other);
-      }
+      : list_ptr(nullptr), node_ptr(nullptr) { }
 
 
     // Your iterator should implement the following public operators:
@@ -180,13 +166,17 @@ public:
     //     violates the REQURES clause.
     // Note: comparing both the list and node pointers should be
     // sufficient to meet these requirements.
-    Iterator& operator*() {
+    T& operator*() {
       assert(false);
+      Iterator it;
+      return it;
     }
 
     // prefix
     Iterator& operator++() {
       assert(false);
+      Iterator it;
+      return it;
     }
 
     Iterator& operator++(int /*postfix*/) {
@@ -200,8 +190,8 @@ public:
       //   iterator obtained from a list, even if it is the end iterator
     // comparing iterators obtained from different lists results in
       //   undefined behavior
-    Iterator& operator==(const Iterator& other) const {
-      assert(false);
+    bool operator==(const Iterator& other) const {
+      return false;
     } 
 
     // two iterators to different locations in the same list must
@@ -215,9 +205,11 @@ public:
     //   assert(false)
     // }
 
-    Iterator& operator!=(const Iterator& other) const {
-      assert(false);
+    bool operator!=(const Iterator& other) const {
+      return false;
     }
+
+  
 
     // Type aliases required to work with STL algorithms. Do not modify these.
     using iterator_category = std::bidirectional_iterator_tag;
@@ -269,9 +261,9 @@ public:
 
 
     // construct an Iterator at a specific position in the given List
-    Iterator(const List *lp, Node *np) {
-      assert(false);
-    }
+    // Iterator(const List *lp, Node *np) {
+    //   assert(false);
+    // }
 
   };//List::Iterator
   ////////////////////////////////////////
@@ -293,6 +285,8 @@ public:
   //         element erased by the function call
   Iterator erase(Iterator i) {
     assert(false);
+    Iterator it;
+    return it;
   }
 
   //REQUIRES: i is a valid iterator associated with this list
@@ -300,6 +294,8 @@ public:
   //         Returns an iterator to the the newly inserted element.
   Iterator insert(Iterator i, const T &datum) {
     assert(false);
+    Iterator it;
+    return it;
   }
 
 };//List
