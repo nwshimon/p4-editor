@@ -1,24 +1,70 @@
-/* TextBuffer.cpp
- *
- * doubly-linked, double-ended list with Iterator interface
- * EECS 280 Project 4
- */
+#include <cassert>
+#include "TextBuffer.hpp"
 
-#include <iostream>
-#include <iterator> //std::bidirectional_iterator_tag
-#include <cassert>  //assert
-#include <list>
-#include "List.hpp"
+TextBuffer::TextBuffer() {}
 
-class TextBuffer {
-  using CharList = std::list<char>;
-  using Iterator = std::list<char>::iterator;
-private:
-  CharList data;           // linked list that contains the characters
-  Iterator cursor;         // current position within the list
-  int row;                 // current row
-  int column;              // current column
-  int index;               // current index
-  // ... public interface not shown
-};
+bool TextBuffer::forward() {
+  return false;
+}
 
+bool TextBuffer::backward() {
+  return false;
+}
+
+void TextBuffer::insert(char c) {
+  assert(false);
+}
+
+bool TextBuffer::remove() {
+  return false;
+}
+
+void TextBuffer::move_to_row_start() {
+  assert(false);
+}
+
+void TextBuffer::move_to_row_end() {
+  assert(false);
+}
+
+void TextBuffer::move_to_column(int new_column) {}
+
+bool TextBuffer::up() {
+  return false;
+}
+
+bool TextBuffer::down() {
+  return false;
+}
+
+bool TextBuffer::is_at_end() const {
+  return true;
+}
+
+char TextBuffer::data_at_cursor() const {
+  return '\0';
+}
+
+int TextBuffer::get_row() const {
+  return 0;
+}
+
+int TextBuffer::get_column() const {
+  return 0;
+}
+
+int TextBuffer::get_index() const {
+  return 0;
+}
+
+int TextBuffer::size() const {
+  return 0;
+}
+
+std::string TextBuffer::stringify() const {
+  return "";
+}
+
+int TextBuffer::compute_column() const {
+  return 0;
+}

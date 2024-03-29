@@ -25,7 +25,7 @@ public:
   //HINT:    Traversing a list is really slow. Instead, keep track of the size
   //         with a private member variable. That's how std::list does it.
   int size() const {
-    return size;
+    return _size;
   }
 
   //REQUIRES: list is not empty
@@ -57,13 +57,15 @@ public:
   void push_back(const T &datum) {
     Node *p = new Node;
     p->datum = datum;
-    p->next = nullptr;
-    delete last;
-    last->next = p;
-    if (empty()) { first = last = p; }
-    else {
+    if (!empty()) {
+      p->prev = last;
+      p->next = nullptr; // need b/c not initialized yet
       last->next = p;
       last = p;
+    }
+    else {
+      p->prev = p->next = nullptr;
+      first = last = p;
     }
     ++_size;
   }
@@ -72,9 +74,12 @@ public:
   //MODIFIES: may invalidate list iterators
   //EFFECTS:  removes the item at the front of the list
   void pop_front() {
-    Node *to_delete = first;
+    assert(!empty());
+    Node *aux = first;
     first = first->next;
-    delete to_delete;
+    first->prev = nullptr;
+    delete aux;
+    --_size;
     // DECREMENT SIZE
   }
 
@@ -82,8 +87,7 @@ public:
   //MODIFIES: may invalidate list iterators
   //EFFECTS:  removes the item at the back of the list
   void pop_back() {
-    // have to do ourselves
-    // DECREMENT SIZE
+    assert(!empty());
   }
 
   //MODIFIES: may invalidate list iterators
@@ -101,12 +105,12 @@ public:
 
 // DEFAULT LIST CONSTRUCTOR
   List()
-   : next(nullptr), prev(nullptr), _size(0) { } // size of data should be 0
+   : first(nullptr), last(nullptr), _size(0) { } // size of data should be 0
 
 // COPY LIST CONSTRUCTOR
   List(const List &other)
-    : next(nullptr), prev(nullptr) {
-    copy_all(List);
+    : first(nullptr), last(nullptr) {
+    copy_all(other);
   }
 
 // LIST DESTRUCTOR
@@ -114,6 +118,7 @@ public:
     clear();
   }
 
+// OVERLOADED LIST ASSIGNMENT OPERATOR
 
 private:
   //a private type
@@ -154,6 +159,7 @@ public:
     // - two default-constructed iterators must compare equal
     // - a default-constructed iterator must compare unequal to an
     //   iterator obtained from a list, even if it is the end iterator
+            // sus
     // - two iterators to the same location in the same list must
     //   compare equal
     // - two iterators to different locations in the same list must
@@ -163,50 +169,56 @@ public:
     //   - Your implementation can handle this however you like, but
     //     don't assume any particular behavior in your test cases --
     //     comparing iterators from different lists essentially
-    //     violates the REQURES clause.
+    //     violates the REQUIRES clause.
     // Note: comparing both the list and node pointers should be
     // sufficient to meet these requirements.
-    T& operator*() {
-      assert(false);
-      Iterator it;
-      return it;
+    T& operator*() const {
+      return node_ptr->datum;
     }
 
-    // prefix
-    Iterator& operator++() {
-      assert(false);
-      Iterator it;
-      return it;
+    Iterator& operator++() { // prefix ++ (e.g. ++it)
+      assert(list_ptr);
+      if (node_ptr) {
+        node_ptr = node_ptr->next;
+      } else { // decrementing an end Iterator moves it to the last element
+        node_ptr = list_ptr->first;
+      }
+      return *this;
     }
 
-    Iterator& operator++(int /*postfix*/) {
+    Iterator operator++(int /*postfix*/) { // postfix ++ (e.g. it++)
       Iterator copy = *this;
-      // operator++(); // this is from lec
+      operator++();
       return copy;
     }
     
-    // two default-constructed iterators must compare equal 
-    // a default-constructed iterator must compare unequal to an
-      //   iterator obtained from a list, even if it is the end iterator
-    // comparing iterators obtained from different lists results in
-      //   undefined behavior
     bool operator==(const Iterator& other) const {
-      return false;
-    } 
+    // - comparing iterators obtained from different lists results in
+    //   undefined behavior
+      assert(this->list_ptr == other.list_ptr);
+      // using *this means that *this actually has the same object type
+      // as the class in which the operator overloading is implemented
 
-    // two iterators to different locations in the same list must
-      // compare to unequal
-    // a default-constructed iterator must compare unequal to an
-      // iterator obtained from a list, even if it is the end iterator
-    // comparing iterators obtained from different lists results in
-      //   undefined behavior
+    // - two default-constructed iterators must compare equal
+    // - a default-constructed iterator must compare unequal to an
+    //   iterator obtained from a list, even if it is the end iterator 
+      if (!this->list_ptr && !other.list_ptr) {
+        return true;
+      }
+      
+    // - two iterators to the same location in the same list must
+    //   compare equal
+      if (this->node_ptr == other.node_ptr) {
+        return true;
+      }
 
-    // Iterator& operator!=(auto) {
-    //   assert(false)
-    // }
+    // - two iterators to different locations in the same list must
+    //   compare unequal
+      return false; // can just use else { } ???
+    }
 
-    bool operator!=(const Iterator& other) const {
-      return false;
+    bool operator!=(const Iterator& other) const { // reference to "other"
+      return !(*this == other);
     }
 
   
@@ -224,6 +236,7 @@ public:
     //           and returns a reference to this Iterator
     Iterator& operator--() { // prefix -- (e.g. --it)
       assert(list_ptr);
+      assert(*this != list_ptr->begin());
       if (node_ptr) {
         node_ptr = node_ptr->prev;
       } else { // decrementing an end Iterator moves it to the last element
@@ -248,7 +261,7 @@ public:
     //       member variable f, then it->f accesses f on the
     //       underlying T element.
     T* operator->() const {
-      return &operator*();
+      return &operator*(); // do we need to make changes to this?
     }
 
   private:
@@ -261,21 +274,20 @@ public:
 
 
     // construct an Iterator at a specific position in the given List
-    // Iterator(const List *lp, Node *np) {
-    //   assert(false);
-    // }
+    Iterator(const List *lp, Node *np)
+      : list_ptr(lp), node_ptr(np) { }
 
   };//List::Iterator
   ////////////////////////////////////////
 
   // return an Iterator pointing to the first element
   Iterator begin() const {
-    return Iterator(first);
+    return Iterator(this, first); // wouldn't this return a pointer to List type
   }
 
   // return an Iterator pointing to "past the end"
   Iterator end() const {
-    return Iterator(last);
+    return Iterator(this, last);
   }
 
   //REQUIRES: i is a valid, dereferenceable iterator associated with this list
@@ -284,7 +296,7 @@ public:
   //         Returns An iterator pointing to the element that followed the
   //         element erased by the function call
   Iterator erase(Iterator i) {
-    assert(false);
+    assert(false); // CHANGE THIS
     Iterator it;
     return it;
   }
