@@ -42,15 +42,27 @@ public:
     return last->datum;
   }
 
+
+
+  //POTENTIAL ISSUE: HOW ARE WE MAKING SURE THAT
+    // THIS IS GETTING DELETED OFF THE DYNAM MEM?????
+    // ^^^^^
   //EFFECTS:  inserts datum into the front of the list
   void push_front(const T &datum) {
+    // note: doesnt matter if the list is empty, this logic would still work
+    // make new node
+      // next and prev initialized to default 0
     Node *p = new Node;
-    p->datum = datum;
+    // assign new node ptr to current first node
     p->next = first;
+    // assign current first node prev ptr to new node
+    first->prev = p;
+    // reassign first to new node (that is pushed front)
     first = p;
-    // Node *p = new Node;
-    // p->datum = datum;
-    ++_size;
+    // give new node passed datum value
+    p->datum = datum;
+    // increment size
+    ++_size; 
   }
 
   //EFFECTS:  inserts datum into the back of the list
@@ -77,10 +89,29 @@ public:
     assert(!empty());
     Node *aux = first;
     first = first->next;
+<<<<<<< HEAD
     first->prev = nullptr;
     delete aux;
     --_size;
     // DECREMENT SIZE
+=======
+    delete to_delete;
+    
+    //copy from push front
+    // make new node
+      // next and prev initialized to default 0
+    Node *p = new Node;
+    // assign new node ptr to current first node
+    p->next = first;
+    // assign current first node prev ptr to new node
+    first->prev = p;
+    // reassign first to new node (that is pushed front)
+    first = p;
+    // give new node passed datum value
+    p->datum = datum;
+    // increment size
+    ++_size; 
+>>>>>>> 2ccd40fe6cf47f4ddd8ceef9ad5506c4d57b54cd
   }
 
   //REQUIRES: list is not empty
@@ -88,6 +119,21 @@ public:
   //EFFECTS:  removes the item at the back of the list
   void pop_back() {
     assert(!empty());
+<<<<<<< HEAD
+=======
+    // aux ptr
+    Node *aux_ptr = new Node;
+    // save address of last node to aux ptr
+    aux_ptr = last;
+    // save prev ptr of current last node to last ptr in list
+    last = last->prev;
+    // delete old last node through aux node ptr
+    delete aux_ptr;
+    // make next of updated last node = 0 (null ptr)
+    last->next = nullptr; 
+    // decrease size
+    --_size;
+>>>>>>> 2ccd40fe6cf47f4ddd8ceef9ad5506c4d57b54cd
   }
 
   //MODIFIES: may invalidate list iterators
@@ -104,6 +150,7 @@ public:
   // of the class must be able to create, copy, assign, and destroy Lists.
 
 // DEFAULT LIST CONSTRUCTOR
+<<<<<<< HEAD
   List()
    : first(nullptr), last(nullptr), _size(0) { } // size of data should be 0
 
@@ -111,6 +158,15 @@ public:
   List(const List &other)
     : first(nullptr), last(nullptr) {
     copy_all(other);
+=======
+  List() {
+    assert(false);
+  }
+
+// COPY LIST CONSTRUCTOR
+  List(const List &other) {
+    assert(false);
+>>>>>>> 2ccd40fe6cf47f4ddd8ceef9ad5506c4d57b54cd
   }
 
 // LIST DESTRUCTOR
@@ -150,7 +206,21 @@ public:
     // Add a default constructor here. The default constructor must set both
     // pointer members to null pointers.
     Iterator()
-      : list_ptr(nullptr), node_ptr(nullptr) { }
+      : node_ptr(nullptr), list_ptr(nullptr) { }
+
+
+    // Add custom implementations of the destructor, copy constructor, and
+    // overloaded assignment operator, if appropriate. If these operations
+    // will work correctly without defining these, you should omit them. A user
+    // of the class must be able to copy, assign, and destroy Iterators.
+    ~Iterator() {
+      assert(false);
+    }
+
+    Iterator(const Iterator &other)
+      : node_ptr(nullptr), list_ptr(nullptr) {
+        // copy_all(other);
+      }
 
 
     // Your iterator should implement the following public operators:
@@ -164,7 +234,7 @@ public:
     //   compare equal
     // - two iterators to different locations in the same list must
     //   compare unequal
-    // - comparing iterators obtained from different lists results in
+    // - comparipng iterators obtained from different lists results in
     //   undefined behavior
     //   - Your implementation can handle this however you like, but
     //     don't assume any particular behavior in your test cases --
@@ -172,8 +242,15 @@ public:
     //     violates the REQUIRES clause.
     // Note: comparing both the list and node pointers should be
     // sufficient to meet these requirements.
+<<<<<<< HEAD
     T& operator*() const {
       return node_ptr->datum;
+=======
+    Iterator& operator*() {
+      assert(false);
+      Iterator it;
+      return it;
+>>>>>>> 2ccd40fe6cf47f4ddd8ceef9ad5506c4d57b54cd
     }
 
     Iterator& operator++() { // prefix ++ (e.g. ++it)
@@ -193,11 +270,24 @@ public:
     }
     
     bool operator==(const Iterator& other) const {
+<<<<<<< HEAD
     // - comparing iterators obtained from different lists results in
     //   undefined behavior
       assert(this->list_ptr == other.list_ptr);
       // using *this means that *this actually has the same object type
       // as the class in which the operator overloading is implemented
+=======
+      assert(false);
+      if (other == this) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+
+    } 
+>>>>>>> 2ccd40fe6cf47f4ddd8ceef9ad5506c4d57b54cd
 
     // - two default-constructed iterators must compare equal
     // - a default-constructed iterator must compare unequal to an
@@ -217,11 +307,14 @@ public:
       return false; // can just use else { } ???
     }
 
+<<<<<<< HEAD
     bool operator!=(const Iterator& other) const { // reference to "other"
       return !(*this == other);
+=======
+    bool operator!=(const Iterator& other) const {
+      assert(false);
+>>>>>>> 2ccd40fe6cf47f4ddd8ceef9ad5506c4d57b54cd
     }
-
-  
 
     // Type aliases required to work with STL algorithms. Do not modify these.
     using iterator_category = std::bidirectional_iterator_tag;
@@ -274,8 +367,14 @@ public:
 
 
     // construct an Iterator at a specific position in the given List
+<<<<<<< HEAD
     Iterator(const List *lp, Node *np)
       : list_ptr(lp), node_ptr(np) { }
+=======
+    Iterator(const List *lp, Node *np) {
+      assert(false);
+    }
+>>>>>>> 2ccd40fe6cf47f4ddd8ceef9ad5506c4d57b54cd
 
   };//List::Iterator
   ////////////////////////////////////////
@@ -295,19 +394,31 @@ public:
   //EFFECTS: Removes a single element from the list container.
   //         Returns An iterator pointing to the element that followed the
   //         element erased by the function call
+<<<<<<< HEAD
   Iterator erase(Iterator i) {
     assert(false); // CHANGE THIS
     Iterator it;
     return it;
   }
+=======
+  Iterator erase(Iterator i) {  
+    // assert that i current node ptr is dereferenceable 
+      // aka not null ptr
+    assert(i->node_ptr != nullptr); // if it's empty nothing can be erased
+>>>>>>> 2ccd40fe6cf47f4ddd8ceef9ad5506c4d57b54cd
 
+    // make new node ptr                      
+    Node *p = new Node;
+    
+
+
+  }
+[[]]
   //REQUIRES: i is a valid iterator associated with this list
   //EFFECTS: Inserts datum before the element at the specified position.
   //         Returns an iterator to the the newly inserted element.
   Iterator insert(Iterator i, const T &datum) {
     assert(false);
-    Iterator it;
-    return it;
   }
 
 };//List
