@@ -42,15 +42,27 @@ public:
     return last->datum;
   }
 
+
+
+  //POTENTIAL ISSUE: HOW ARE WE MAKING SURE THAT
+    // THIS IS GETTING DELETED OFF THE DYNAM MEM?????
+    // ^^^^^
   //EFFECTS:  inserts datum into the front of the list
   void push_front(const T &datum) {
+    // note: doesnt matter if the list is empty, this logic would still work
+    // make new node
+      // next and prev initialized to default 0
     Node *p = new Node;
-    p->datum = datum;
+    // assign new node ptr to current first node
     p->next = first;
+    // assign current first node prev ptr to new node
+    first->prev = p;
+    // reassign first to new node (that is pushed front)
     first = p;
-    // Node *p = new Node;
-    // p->datum = datum;
-    ++_size;
+    // give new node passed datum value
+    p->datum = datum;
+    // increment size
+    ++_size; 
   }
 
   //EFFECTS:  inserts datum into the back of the list
@@ -75,15 +87,40 @@ public:
     Node *to_delete = first;
     first = first->next;
     delete to_delete;
-    // DECREMENT SIZE
+    
+    //copy from push front
+    // make new node
+      // next and prev initialized to default 0
+    Node *p = new Node;
+    // assign new node ptr to current first node
+    p->next = first;
+    // assign current first node prev ptr to new node
+    first->prev = p;
+    // reassign first to new node (that is pushed front)
+    first = p;
+    // give new node passed datum value
+    p->datum = datum;
+    // increment size
+    ++_size; 
   }
 
   //REQUIRES: list is not empty
   //MODIFIES: may invalidate list iterators
   //EFFECTS:  removes the item at the back of the list
   void pop_back() {
-    // have to do ourselves
-    // DECREMENT SIZE
+    assert(!empty());
+    // aux ptr
+    Node *aux_ptr = new Node;
+    // save address of last node to aux ptr
+    aux_ptr = last;
+    // save prev ptr of current last node to last ptr in list
+    last = last->prev;
+    // delete old last node through aux node ptr
+    delete aux_ptr;
+    // make next of updated last node = 0 (null ptr)
+    last->next = nullptr; 
+    // decrease size
+    --_size;
   }
 
   //MODIFIES: may invalidate list iterators
@@ -100,13 +137,13 @@ public:
   // of the class must be able to create, copy, assign, and destroy Lists.
 
 // DEFAULT LIST CONSTRUCTOR
-  List()
-   : next(nullptr), prev(nullptr), _size(0) { } // size of data should be 0
+  List() {
+    assert(false);
+  }
 
 // COPY LIST CONSTRUCTOR
-  List(const List &other)
-    : next(nullptr), prev(nullptr) {
-    copy_all(List);
+  List(const List &other) {
+    assert(false);
   }
 
 // LIST DESTRUCTOR
@@ -145,7 +182,21 @@ public:
     // Add a default constructor here. The default constructor must set both
     // pointer members to null pointers.
     Iterator()
-      : list_ptr(nullptr), node_ptr(nullptr) { }
+      : node_ptr(nullptr), list_ptr(nullptr) { }
+
+
+    // Add custom implementations of the destructor, copy constructor, and
+    // overloaded assignment operator, if appropriate. If these operations
+    // will work correctly without defining these, you should omit them. A user
+    // of the class must be able to copy, assign, and destroy Iterators.
+    ~Iterator() {
+      assert(false);
+    }
+
+    Iterator(const Iterator &other)
+      : node_ptr(nullptr), list_ptr(nullptr) {
+        // copy_all(other);
+      }
 
 
     // Your iterator should implement the following public operators:
@@ -158,7 +209,7 @@ public:
     //   compare equal
     // - two iterators to different locations in the same list must
     //   compare unequal
-    // - comparing iterators obtained from different lists results in
+    // - comparipng iterators obtained from different lists results in
     //   undefined behavior
     //   - Your implementation can handle this however you like, but
     //     don't assume any particular behavior in your test cases --
@@ -166,7 +217,7 @@ public:
     //     violates the REQURES clause.
     // Note: comparing both the list and node pointers should be
     // sufficient to meet these requirements.
-    T& operator*() {
+    Iterator& operator*() {
       assert(false);
       Iterator it;
       return it;
@@ -191,7 +242,15 @@ public:
     // comparing iterators obtained from different lists results in
       //   undefined behavior
     bool operator==(const Iterator& other) const {
-      return false;
+      assert(false);
+      if (other == this) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+
     } 
 
     // two iterators to different locations in the same list must
@@ -206,10 +265,8 @@ public:
     // }
 
     bool operator!=(const Iterator& other) const {
-      return false;
+      assert(false);
     }
-
-  
 
     // Type aliases required to work with STL algorithms. Do not modify these.
     using iterator_category = std::bidirectional_iterator_tag;
@@ -261,9 +318,9 @@ public:
 
 
     // construct an Iterator at a specific position in the given List
-    // Iterator(const List *lp, Node *np) {
-    //   assert(false);
-    // }
+    Iterator(const List *lp, Node *np) {
+      assert(false);
+    }
 
   };//List::Iterator
   ////////////////////////////////////////
@@ -283,19 +340,23 @@ public:
   //EFFECTS: Removes a single element from the list container.
   //         Returns An iterator pointing to the element that followed the
   //         element erased by the function call
-  Iterator erase(Iterator i) {
-    assert(false);
-    Iterator it;
-    return it;
-  }
+  Iterator erase(Iterator i) {  
+    // assert that i current node ptr is dereferenceable 
+      // aka not null ptr
+    assert(i->node_ptr != nullptr); // if it's empty nothing can be erased
 
+    // make new node ptr                      
+    Node *p = new Node;
+    
+
+
+  }
+[[]]
   //REQUIRES: i is a valid iterator associated with this list
   //EFFECTS: Inserts datum before the element at the specified position.
   //         Returns an iterator to the the newly inserted element.
   Iterator insert(Iterator i, const T &datum) {
     assert(false);
-    Iterator it;
-    return it;
   }
 
 };//List
