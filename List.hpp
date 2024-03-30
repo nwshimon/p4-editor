@@ -42,11 +42,6 @@ public:
     return last->datum;
   }
 
-
-
-  //POTENTIAL ISSUE: HOW ARE WE MAKING SURE THAT
-    // THIS IS GETTING DELETED OFF THE DYNAM MEM?????
-    // ^^^^^
   //EFFECTS:  inserts datum into the front of the list
   void push_front(const T &datum) {
     // note: doesnt matter if the list is empty, this logic would still work
@@ -70,7 +65,6 @@ public:
     Node *p = new Node;
     p->datum = datum;
     p->next = nullptr;
-    delete last;
     last->next = p;
     if (empty()) {
       first = last = p;
@@ -88,24 +82,12 @@ public:
   //MODIFIES: may invalidate list iterators
   //EFFECTS:  removes the item at the front of the list
   void pop_front() {
-    Node *to_delete = first;
+    assert(!empty());
+    Node *aux = first;
     first = first->next;
-    delete to_delete;
-    
-    //copy from push front
-    // make new node
-      // next and prev initialized to default 0
-    Node *p = new Node;
-    // assign new node ptr to current first node
-    p->next = first;
-    // assign current first node prev ptr to new node
-    first->prev = p;
-    // reassign first to new node (that is pushed front)
-    first = p;
-    // give new node passed datum value
-    p->datum = datum;
-    // increment size
-    ++_size; 
+    first->prev = nullptr;
+    delete aux;
+    --_size;
   }
 
   //REQUIRES: list is not empty
@@ -332,25 +314,63 @@ public:
   //EFFECTS: Removes a single element from the list container.
   //         Returns An iterator pointing to the element that followed the
   //         element erased by the function call
-  Iterator erase(Iterator i) {  
-    // assert that i current node ptr is dereferenceable 
-      // aka not null ptr
-    assert(i->node_ptr != nullptr); // if it's empty nothing can be erased
+  Iterator erase(Iterator i) {
+    assert(i->node_ptr != nullptr);
 
-    // make new node ptr                      
-    Node *p = new Node;
-    
-    Iterator it;
-    return it;
+    // for when the cursor is in the middle of the list
+    if (i->node_ptr->next && i->node_ptr->prev) {
+      Node *next = i->
+    }
+    // for when the cursor is at the end of the list - can this even happen?
+    // because after deletion of current element
+    // then no "element that followed the erased element"
+    else if (!i->node_ptr->next) {
+
+    }
+    // for when the cursor is at the beginning of the list
+    else if (!i->node_ptr->prev) {
+
+    }
+    return i;
   }
 
   //REQUIRES: i is a valid iterator associated with this list
   //EFFECTS: Inserts datum before the element at the specified position.
   //         Returns an iterator to the the newly inserted element.
   Iterator insert(Iterator i, const T &datum) {
-    assert(false);
-    Iterator it;
-    return it;
+    // assert that i current node ptr is dereferenceable 
+      // aka not null ptr
+    assert(i->node_ptr != nullptr); // if nullptr then iterator is past the end
+
+    // make new node ptr and attaches to the node pointer to by i
+    Node *p = new Node;
+    p->datum = datum;
+    p->next = i->node_ptr;
+
+    // for when cursor is in the middle of the list
+    if (i->prev) {
+      // stores the original iterator i (og position) into aux
+      Iterator aux = i--;
+      // i is now at node_ptr->prev (og position - 1)
+
+      // assigns the next ptr of the element before insertion to p
+      i->next = p;
+      // assigns the prev ptr of inserted element p to the element before insertion
+      p->prev = i;
+      // assigns the og node's prev ptr to inserted element p 
+      aux->prev = p;
+    }
+    // for when cursor is at the beginning of a list
+    else {
+      // the prev ptr of current node now points to inserted p
+      i->node_ptr->prev = p;
+      // p would be the first element
+      i->list_ptr->first = p;
+      // --> therefore prev points to nothing
+      p->prev = nullptr;
+    }
+    i->node_ptr = p;
+    return i;
   }
 
 };//List
