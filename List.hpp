@@ -114,6 +114,7 @@ public:
   void clear() {
     while (!empty()) {
       pop_front();
+      // do we need to assign null values to first and last in list?
     }
   }
 
@@ -318,18 +319,36 @@ public:
     assert(i->node_ptr != nullptr);
 
     // for when the cursor is in the middle of the list
+      // if next and prev are not null ptrs - not first or last
     if (i->node_ptr->next && i->node_ptr->prev) {
-      Node *next = i->
-    }
-    // for when the cursor is at the end of the list - can this even happen?
-    // because after deletion of current element
-    // then no "element that followed the erased element"
-    else if (!i->node_ptr->next) {
+      // nte = node to erase
+      // next pointer of prev node to nte repointed to node after nte
+      i->node_ptr->prev->next = i->node->ptr->next;
+      // prev pointer of next node to nte repointed to node before nte
+      i->node_ptr->next->prev = i->node_ptr->prev;
 
+      // pointer to nte
+      Node *next = i->node_ptr;
+      // i is now node following nte
+      i->node_ptr = i->node_ptr->next;
+      // erase nte
+      delete next;
+    }
+    // for when the cursor is at the end of the list 
+      // if next is not null ptr - not last
+    else if (!i->node_ptr->next) {
+      // remove last element in list
+      pop_back();
+      // i points to last
+      i->node_ptr = last;
     }
     // for when the cursor is at the beginning of the list
+      // if prev is not null ptr - not first
     else if (!i->node_ptr->prev) {
-
+      // remove first element in list
+      pop_front();
+      // i points to first
+      i->node_ptr = first;
     }
     return i;
   }
