@@ -50,7 +50,6 @@ public:
     Node *p = new Node;
     // give new node passed datum value
     p->datum = datum;
-    p->prev = nullptr;
     // assign new node ptr to current first node
     p->next = first;
     // assign current first node prev ptr to new node
@@ -97,13 +96,13 @@ public:
   void pop_back() {
     assert(!empty());
     // aux ptr
-    Node *aux = new Node;
+    Node *aux_ptr = new Node;
     // save address of last node to aux ptr
-    aux = last;
+    aux_ptr = last;
     // save prev ptr of current last node to last ptr in list
     last = last->prev;
     // delete old last node through aux node ptr
-    delete aux;
+    delete aux_ptr;
     // make next of updated last node = 0 (null ptr)
     last->next = nullptr; 
     // decrease size
@@ -130,12 +129,20 @@ public:
 
 // COPY LIST CONSTRUCTOR
   List(const List &other) {
-    //copy_all();
+    copy_all(other);
   }
 
 // LIST DESTRUCTOR
   ~List() {
     clear();
+  }
+
+// OVERLOADED ASSIGNMENT OPERATOR
+  List& operator=(const List &rhs) {
+    if (this == &rhs) { return *this; }
+    clear();
+    copy_all(rhs);
+    return *this;
   }
 
 
@@ -169,7 +176,7 @@ public:
     // Add a default constructor here. The default constructor must set both
     // pointer members to null pointers.
     Iterator()
-      : node_ptr(nullptr), list_ptr(nullptr) { }
+      : list_ptr(nullptr), node_ptr(nullptr) { }
 
     // Your iterator should implement the following public operators:
     // *, ++ (both prefix and postfix), == and !=.
@@ -189,6 +196,10 @@ public:
     //     violates the REQURES clause.
     // Note: comparing both the list and node pointers should be
     // sufficient to meet these requirements.
+
+    // returns a dereferenced iterator - which is just the actual datum that
+      // the iterator is pointing to
+      // e.g. 'r' in 'rat'
     T& operator*() const {
       assert(node_ptr);
       return node_ptr->datum;
@@ -281,7 +292,7 @@ public:
     //       member variable f, then it->f accesses f on the
     //       underlying T element.
     T* operator->() const {
-      return &(operator*());
+      return &operator*();
     }
 
   private:
@@ -317,39 +328,40 @@ public:
   //         Returns An iterator pointing to the element that followed the
   //         element erased by the function call
   Iterator erase(Iterator i) {
-    assert(i->node_ptr != nullptr);
+    assert(i.node_ptr != nullptr);
+    // i->node_ptr dereferences node_ptr into its T object type
 
     // for when the cursor is in the middle of the list
       // if next and prev are not null ptrs - not first or last
-    if (i->node_ptr->next && i->node_ptr->prev) {
+    if (i.node_ptr->next && i.node_ptr->prev) {
       // nte = node to erase
       // next pointer of prev node to nte repointed to node after nte
-      i->node_ptr->prev->next = i->node->ptr->next;
+      i.node_ptr->prev->next = i.node_ptr->next;
       // prev pointer of next node to nte repointed to node before nte
-      i->node_ptr->next->prev = i->node_ptr->prev;
+      i.node_ptr->next->prev = i.node_ptr->prev;
 
       // pointer to nte
-      Node *next = i->node_ptr;
+      Node *to_erase = i.node_ptr;
       // i is now node following nte
-      i->node_ptr = i->node_ptr->next;
+      i.node_ptr = i.node_ptr->next;
       // erase nte
-      delete next;
+      delete to_erase;
     }
     // for when the cursor is at the end of the list 
       // if next is not null ptr - not last
-    else if (!i->node_ptr->next) {
+    else if (!i.node_ptr->next) {
       // remove last element in list
       pop_back();
       // i points to last
-      i->node_ptr = last;
+      i.node_ptr = last;
     }
     // for when the cursor is at the beginning of the list
       // if prev is not null ptr - not first
-    else if (!i->node_ptr->prev) {
+    else if (!i.node_ptr->prev) {
       // remove first element in list
       pop_front();
       // i points to first
-      i->node_ptr = first;
+      i.node_ptr = first;
     }
     return i;
   }
@@ -360,40 +372,41 @@ public:
   Iterator insert(Iterator i, const T &datum) {
     // assert that i current node ptr is dereferenceable 
       // aka not null ptr
-    assert(i->node_ptr != nullptr); // if nullptr then iterator is past the end
+    assert(i.node_ptr != nullptr); // if nullptr then iterator is past the end
 
     // make new node ptr and attaches to the node pointer to by i
     Node *p = new Node;
     p->datum = datum;
-    p->next = i->node_ptr;
+    p->next = i.node_ptr;
 
     // for when cursor is in the middle of the list
-    if (i->prev) {
+    if (i.node_ptr->prev && i.node_ptr->next) {
       // stores the original iterator i (og position) into aux
       Iterator aux = i--;
       // i is now at node_ptr->prev (og position - 1)
 
       // assigns the next ptr of the element before insertion to p
-      i->next = p;
+      i.node_ptr->next = p;
       // assigns the prev ptr of inserted element p to the element before insertion
-      p->prev = i;
+      p->prev = i.node_ptr;
       // assigns the og node's prev ptr to inserted element p 
-      aux->prev = p;
+      aux.node_ptr->prev = p;
+      i.node_ptr = p;
     }
     // for when cursor is at the beginning of a list
-    else {
-      // the prev ptr of current node now points to inserted p
-      i->node_ptr->prev = p;
+    else if (!i.node_ptr->prev) {
       // p would be the first element
-      i->list_ptr->first = p;
-      // --> therefore prev points to nothing
-      p->prev = nullptr;
+      push_front(datum);
+      i.node_ptr = first;
     }
-    i->node_ptr = p;
+    else if (!i.node_ptr->next) {
+      push_back(datum);
+      i.node_ptr = last;
+    }
     return i;
   }
 
-};// List
+};//List
 
 
 ////////////////////////////////////////////////////////////////////////////////

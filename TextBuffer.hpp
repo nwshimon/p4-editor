@@ -27,7 +27,7 @@ private:
   CharList data;           // linked list that contains the characters
   Iterator cursor;         // iterator to current element in the list
   int row;                 // current row
-  int col;              // current column
+  int column;              // current column
   int index;               // current index
 
   // INVARIANT (cursor iterator):

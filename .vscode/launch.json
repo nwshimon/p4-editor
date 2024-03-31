@@ -2,12 +2,12 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "C/C++ Runner: Debug Session",
       "type": "lldb",
       "request": "launch",
+      "name": "Debug",
+      "program": "${workspaceFolder}/List_tests.exe",
       "args": [],
-      "cwd": "/Users/vale./eecs280/p4-editor/List_tests.exe",
-      "program": "/Users/vale./eecs280/p4-editor/build/Debug/outDebug/List_tests.exe"
+      "cwd": "${workspaceFolder}"
     }
   ]
 }
