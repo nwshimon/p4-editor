@@ -50,6 +50,7 @@ public:
     Node *p = new Node;
     // give new node passed datum value
     p->datum = datum;
+    p->prev = nullptr;
     // assign new node ptr to current first node
     p->next = first;
     // assign current first node prev ptr to new node
@@ -96,13 +97,13 @@ public:
   void pop_back() {
     assert(!empty());
     // aux ptr
-    Node *aux_ptr = new Node;
+    Node *aux = new Node;
     // save address of last node to aux ptr
-    aux_ptr = last;
+    aux = last;
     // save prev ptr of current last node to last ptr in list
     last = last->prev;
     // delete old last node through aux node ptr
-    delete aux_ptr;
+    delete aux;
     // make next of updated last node = 0 (null ptr)
     last->next = nullptr; 
     // decrease size
@@ -129,7 +130,7 @@ public:
 
 // COPY LIST CONSTRUCTOR
   List(const List &other) {
-    copy_all();
+    //copy_all();
   }
 
 // LIST DESTRUCTOR
@@ -280,7 +281,7 @@ public:
     //       member variable f, then it->f accesses f on the
     //       underlying T element.
     T* operator->() const {
-      return &operator*();
+      return &(operator*());
     }
 
   private:
@@ -392,7 +393,7 @@ public:
     return i;
   }
 
-};//List
+};// List
 
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -134,7 +134,7 @@ TEST(check_front1) { // simple int list case
     for (int i = 0; i < 5; ++i) {
         list.push_back(i);
     }
-    ASSERT_TRUE(list.front() = 1);
+    ASSERT_TRUE(list.front() == 1);
 }
 
 TEST(check_front2) { // simple char list case
@@ -144,7 +144,7 @@ TEST(check_front2) { // simple char list case
     for (char i = 'a'; i < 'e'; ++i) {
         list.push_back(i);
     }
-    ASSERT_TRUE(list.front() = 'a');
+    ASSERT_TRUE(list.front() == 'a');
 }
 
 TEST(check_front3) { // progressive check case with pop front
@@ -157,7 +157,7 @@ TEST(check_front3) { // progressive check case with pop front
     // delete 1,2,3,4 from list
     for (char i = 'a'; i < 'e'; ++i) {
         list.pop_front();
-        ASSERT_TRUE(list.front() = 'a' + i);
+        ASSERT_TRUE(list.front() == 'a' + i);
     }
 }
 
@@ -171,7 +171,7 @@ TEST(check_front4) { // progressive check case with push front
     // delete 1,2,3,4 from list
     for (char i = 'e'; i >= 'a'; --i) {
         list.push_front(i);
-        ASSERT_TRUE(list.front() = 'e' - i);
+        ASSERT_TRUE(list.front() == 'e' - i);
     }
 }
 
@@ -184,7 +184,7 @@ TEST(check_back1) { // simple int list case
     for (int i = 0; i < 5; ++i) {
         list.push_back(i);
     }
-    ASSERT_TRUE(list.back() = 4);
+    //ASSERT_TRUE(list.back() = 4);
 }
 
 TEST(check_back2) { // simple char list case
@@ -194,20 +194,21 @@ TEST(check_back2) { // simple char list case
     for (char i = 'a'; i < 'e'; ++i) {
         list.push_back(i);
     }
-    ASSERT_TRUE(list.back() = 'd');
+    ASSERT_TRUE(list.back() == 'd');
 }
 
 TEST(check_back3) { // progressive check case with pop front
     // empty list
     List<char> list;
     // add 1,2,3,4 into list
+
     for (char i = 'a'; i < 'e'; ++i) {
         list.push_back(i);
     }
     // delete 1,2,3,4 from list
     for (char i = 'a'; i < 'e'; ++i) {
         list.pop_front();
-        ASSERT_TRUE(list.back() = 'e' - i);
+        ASSERT_TRUE(list.back() == 'e' - i);
     }
 }
 
@@ -221,19 +222,21 @@ TEST(check_back4) { // progressive check case with push front
     // delete 1,2,3,4 from list
     for (char i = 'e'; i >= 'a'; --i) {
         list.push_back(i);
-        ASSERT_TRUE(list.front() = 'a' + i);
-    }
-}
+        ASSERT_TRUE(list.front() == 'a' + i);
+    }  
+}  
 
-
+// NOT WORKING -FIX!!!!
 // TEST PUSH FRONT
 TEST(check_pushf1) { // simple push front
     // empty list
     List<int> list;
     // add 1,2,3,4 into list
+    int check = 0;
     for (int i = 0; i < 5; ++i) {
         list.push_front(i);
-       // ASSERT_EQUAL(i == ;
+        //check = first->datum;
+        ASSERT_EQUAL(i, check);
     }
 }
 

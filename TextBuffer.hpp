@@ -11,6 +11,7 @@
 
 #include <list>
 #include <string>
+#include "List.hpp"
 // Uncomment the following line to use your List implementation
 // #include "List.hpp"
 
@@ -25,9 +26,9 @@ class TextBuffer {
 private:
   CharList data;           // linked list that contains the characters
   Iterator cursor;         // iterator to current element in the list
-  // int row;                 // current row
-  // int column;              // current column
-  // int index;               // current index
+  int row;                 // current row
+  int col;              // current column
+  int index;               // current index
 
   // INVARIANT (cursor iterator):
   //   `cursor` points at an actual character in the list, or is
