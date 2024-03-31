@@ -26,17 +26,17 @@ bool TextBuffer::forward() {
     // forward cursor position by one 
     cursor++;
     // if datum of cursor is new line char
-    if (data_at_cursor() == '\n') {
-      // moves cursor to after the newline
-      cursor++;
-      // increment row
-      row++;
-      // reset col to first col
-      column = 0;
-      // increment index
-      index += 2;
-      return true;
-    }
+    // if (data_at_cursor() == '\n') {
+    //   // moves cursor to after the newline
+    //   cursor++;
+    //   // increment row
+    //   row++;
+    //   // reset col to first col
+    //   column = 0;
+    //   // increment index
+    //   index += 2;
+    //   return true;
+    // }
     // if datum is not new line, increment col and index
     column++;
     index++;
@@ -122,11 +122,15 @@ void TextBuffer::move_to_row_start() {
   column = 0;
 }
 
+// use compute column?
 void TextBuffer::move_to_row_end() {
+
   assert(false);
 }
 
-void TextBuffer::move_to_column(int new_column) {}
+void TextBuffer::move_to_column(int new_column) {
+  // loop? while loop
+}
 
 bool TextBuffer::up() {
 
@@ -170,6 +174,8 @@ std::string TextBuffer::stringify() const {
   // compute the column when moving left from the
   //          beginning of a line to the end of the previous one.
 int TextBuffer::compute_column() const {
+  // meant to be at the newline character
+  // row would alraedy be changed but 
   TextBuffer copy = *this; // what if textbuffer is long lolz
   copy.up();
   int counter = 0;

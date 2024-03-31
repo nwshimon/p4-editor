@@ -18,7 +18,7 @@ public:
 
   //EFFECTS:  returns true if the list is empty
   bool empty() const {
-    return first == nullptr;
+    return (first == nullptr && last == nullptr);
   }
 
   //EFFECTS: returns the number of elements in this List
@@ -318,7 +318,7 @@ public:
 
   // return an Iterator pointing to "past the end"
   Iterator end() const {
-    return Iterator(this, last);
+    return Iterator(this, nullptr);
   }
 
 

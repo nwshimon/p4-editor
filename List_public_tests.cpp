@@ -20,5 +20,6 @@ TEST(test_traversal) {
     }
     ASSERT_EQUAL(j, list.size());
 }
-
+// not meant to explicitly call the destructor
+// hide the dynamic memory --> clean up after itself when go out of memory
 TEST_MAIN()

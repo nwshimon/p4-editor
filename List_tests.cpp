@@ -175,7 +175,6 @@ TEST(check_front4) { // progressive check case with push front
     }
 }
 
-
 // TEST BACK -- recheck logic later its 3am
 TEST(check_back1) { // simple int list case
     // empty list
@@ -183,8 +182,10 @@ TEST(check_back1) { // simple int list case
     // add 1,2,3,4 into list
     for (int i = 0; i < 5; ++i) {
         list.push_back(i);
+        cout << i;
     }
-    //ASSERT_TRUE(list.back() = 4);
+
+    ASSERT_TRUE(list.back() == 4);
 }
 
 TEST(check_back2) { // simple char list case
@@ -232,12 +233,35 @@ TEST(check_pushf1) { // simple push front
     // empty list
     List<int> list;
     // add 1,2,3,4 into list
-    int check = 0;
+    List<int>::Iterator it = list.begin();
+    int check = *it; // -overloaded deref operator gets datum
+    // List<int>::Iterator it; 
     for (int i = 0; i < 5; ++i) {
         list.push_front(i);
-        //check = first->datum;
         ASSERT_EQUAL(i, check);
     }
+}
+
+
+
+TEST(check_begin1) {
+    List<int> list;
+    // fills in the list with 1, 2, 3, 4
+    for (int i = 0; i < 5; ++i) {
+        list.push_back(i);
+    }
+    // makes an iterator pointing at the first node of the list
+    List<int>::Iterator it = list.begin();
+    ASSERT_EQUAL(*it, 1); // it dereferenced should give first element
+}
+
+TEST(check_begin2) {
+    // empty list
+    List<int> list;
+    // makes an iterator pointing to the beginning of the list
+    // List<int>::Iterator it = list.begin();
+    // it should be pointing to a nullptr
+    // ASSERT_FALSE(it);
 }
 
 
