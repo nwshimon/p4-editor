@@ -211,19 +211,19 @@ TEST(check_back2) { // simple char list case
 //     }
 // }
 
-// TEST(check_back4) { // progressive check case with push front
-//     // empty list
-//     List<char> list;
-//     // add 1,2,3,4 into list
-//     for (char i = 'a'; i < 'e'; ++i) {
-//         list.push_back(i);
-//     }
-//     // delete 1,2,3,4 from list
-//     for (char i = 'e'; i >= 'a'; --i) {
-//         list.push_back(i);
-//         ASSERT_TRUE(list.front() == 'a' + i);
-//     }  
-// }  
+TEST(check_back4) { // progressive check case with push front
+    // empty list
+    List<char> list;
+    // add 1,2,3,4 into list
+    for (char i = 'a'; i < 'e'; ++i) {
+        list.push_back(i);
+    }
+    // delete 1,2,3,4 from list
+    for (char i = 'e'; i >= 'a'; --i) {
+        list.push_back(i);
+        ASSERT_TRUE(list.front() == 'a' + i);
+    }  
+}  
 
 // // NOT WORKING -FIX!!!!
 // // TEST PUSH FRONT

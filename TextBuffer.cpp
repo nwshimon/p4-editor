@@ -36,7 +36,7 @@ bool TextBuffer::forward() {
       column = 0;
     }
      // moves cursor forward
-       cursor++;
+    cursor++;
     return true;
     // so when Hello|\n --> should land on Hello\n|
     // when Hello\n| --> go to next row
@@ -114,27 +114,73 @@ void TextBuffer::move_to_row_start() {
   while (data_at_cursor() != '\n' && cursor != data.begin()) {
     backward(); // go backward once -alr accounts for index decrement
   }
-  // when data.begin == cursor, the loop wont move cursor backward
-  // if (row == 1) { 
-  //   backward();
-  // }
-
-  column = 0;
+  assert(column == 0);
 }
 
 // use compute column?
+// is move to row end meant to be the newline character
+  // or the last actual character?
 void TextBuffer::move_to_row_end() {
+  // for when the cursor is already at newline character
+  if (data_at_cursor() == '\n' || cursor == data.end()) {
+    return;
+  }
 
+  // moving the cursor forward until it hits newline or end of data
+  while (data_at_cursor() != '\n' && cursor != data.end()) {
+    forward();
+  }
 }
 
 void TextBuffer::move_to_column(int new_column) {
-  // loop? while loop
+  assert(new_column >= 0);
+
+  // SHOULD account for when new column is past the max col in the row
+    // by iterating until the cursor has hit newline
+    // or hit past the end
+  while (column != new_column && data_at_cursor() != '\n' && cursor != data.end()) {
+    // for when the desired column is to the right of the current column
+    if (new_column > column) {
+      forward();
+    }
+    // for when the desired column is to the left of the current column
+    else if (new_column < column) {
+      backward;
+    }
+    // for when new column is the same as the current column
+    else {
+      return;
+    }
+  }
+  // check if row, column, index are all kept within invariant here
 }
 
+  //MODIFIES: *this
+  //EFFECTS:  Moves the cursor to the previous row, retaining the
+  //          current column if possible. If the previous row is
+  //          shorter than the current column, moves to the end of the
+  //          previous row (the newline character that ends the row).
+  //          Does nothing if the cursor is already in the first row.
+  //          Returns true if the position changed, or false if it did
+  //          not (i.e. if the cursor was already in the first row).
+  //NOTE:     Your implementation must update the row, column, and index
+  //          if appropriate to maintain all invariants.
 bool TextBuffer::up() {
+
   return false;
 }
 
+  //MODIFIES: *this
+  //EFFECTS:  Moves the cursor to the next row, retaining the current
+  //          column if possible. If the next row is shorter than the
+  //          current column, moves to the end of the next row (the
+  //          newline character that ends the row, or the past-the-end
+  //          position if the row is the last one in the buffer). Does
+  //          nothing if the cursor is already in the last row.
+  //          Returns true if the position changed, or false if it did
+  //          not (i.e. if the cursor was already in the last row).
+  //NOTE:     Your implementation must update the row, column, and index
+  //          if appropriate to maintain all invariants.
 bool TextBuffer::down() {
   return false;
 }
@@ -164,7 +210,7 @@ int TextBuffer::size() const {
 }
 
 std::string TextBuffer::stringify() const {
-  return "";
+  return std::string(data.begin(), data.end());
 }
 
 
