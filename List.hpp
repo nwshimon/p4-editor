@@ -415,6 +415,7 @@ public:
     // for when cursor is in the middle of the list
     if (i.node_ptr->prev && i.node_ptr->next) {
       // stores the original iterator i (og position) into aux
+// use the copy constructor for the iterator instead of doing assignment op!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       Iterator aux = i--;
       // i is now at node_ptr->prev (og position - 1)
 
