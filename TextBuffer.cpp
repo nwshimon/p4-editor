@@ -57,7 +57,7 @@ bool TextBuffer::forward() {
   //          if appropriate to maintain all invariants.
 bool TextBuffer::backward() {
   // if cursor is not at first position
-  if (data.begin() != cursor) { 
+  if (cursor != data.begin()) { 
   // backward cursor position by one 
     cursor--;
     // if datum of cursor is new line char 
@@ -145,7 +145,7 @@ void TextBuffer::move_to_column(int new_column) {
     }
     // for when the desired column is to the left of the current column
     else if (new_column < column) {
-      backward;
+      backward();
     }
     // for when new column is the same as the current column
     else {
@@ -166,7 +166,23 @@ void TextBuffer::move_to_column(int new_column) {
   //NOTE:     Your implementation must update the row, column, and index
   //          if appropriate to maintain all invariants.
 bool TextBuffer::up() {
-
+  int copy_col = column;
+  if (row != 1) {
+    // goes back until the row increases by 1 (which is the row we want to be on)
+    while (row != row - 1) {
+      backward();
+      // row decrements in backward()
+    }
+    // if there is an existing node before the newline on the row above
+      // (which backward() returns in a bool)
+    if (backward()) {
+      // goes back until the cursor hits the original column
+      while (column != copy_col) {
+        backward();
+      }
+    }
+    return true;
+  }
   return false;
 }
 

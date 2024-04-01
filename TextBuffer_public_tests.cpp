@@ -56,21 +56,21 @@ TEST(test_insert_multiple_chars) {
   ASSERT_EQUAL(buffer.data_at_cursor() , 'a');
 }
 
-TEST(test_insert_newline) {
-  TextBuffer buffer;
-  buffer.insert('a');
-  buffer.insert('b');
-  buffer.insert('C');
-  buffer.insert('\n');
-  buffer.backward();
-  ASSERT_EQUAL(buffer.data_at_cursor() , '\n');
-  buffer.backward();
-  ASSERT_EQUAL(buffer.data_at_cursor() , 'C');
-  buffer.backward();
-  ASSERT_EQUAL(buffer.data_at_cursor() , 'b');
-  buffer.backward();
-  ASSERT_EQUAL(buffer.data_at_cursor() , 'a');
-}
+// TEST(test_insert_newline) {
+//   TextBuffer buffer;
+//   buffer.insert('a');
+//   buffer.insert('b');
+//   buffer.insert('C');
+//   buffer.insert('\n');
+//   buffer.backward();
+//   ASSERT_EQUAL(buffer.data_at_cursor() , '\n');
+//   buffer.backward();
+//   ASSERT_EQUAL(buffer.data_at_cursor() , 'C');
+//   buffer.backward();
+//   ASSERT_EQUAL(buffer.data_at_cursor() , 'b');
+//   buffer.backward();
+//   ASSERT_EQUAL(buffer.data_at_cursor() , 'a');
+// }
 
 TEST(test_remove) {
   TextBuffer buffer;

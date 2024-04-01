@@ -335,7 +335,7 @@ public:
 
 
     // add any friend declarations here
-  
+
 
     // construct an Iterator at a specific position in the given List
     Iterator(const List *lp, Node *np)
