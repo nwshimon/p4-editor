@@ -41,6 +41,8 @@ bool TextBuffer::forward() {
     column++;
     index++;
     return true;
+    // so when Hello|\n --> should land on Hello\n|
+    // when Hello\n| --> go to next row
   }
   //if cursor past end position return false
   return false;
@@ -177,7 +179,10 @@ int TextBuffer::compute_column() const {
   // meant to be at the newline character
   // row would alraedy be changed but 
   TextBuffer copy = *this; // what if textbuffer is long lolz
+  // iterator copy
+  // no need to make copy
   copy.up();
+  // do copy -- --> reaches row start
   int counter = 0;
   while (copy.data_at_cursor() != '\n') {
     copy.forward();
@@ -185,3 +190,10 @@ int TextBuffer::compute_column() const {
   }
   return counter; 
 }
+// need to move cursor back until hitting smth
+// make a copy cursor
+
+// postfix vs prefix: if trying to dereference directly on the --it or it-- line
+
+
+// forward backward compute_column

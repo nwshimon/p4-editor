@@ -44,19 +44,27 @@ public:
 
   //EFFECTS:  inserts datum into the front of the list
   void push_front(const T &datum) {
-    // note: doesnt matter if the list is empty, this logic would still work
-    // make new node
-      // next and prev initialized to default 0
+    Node *p = new Node;
+    // next and prev initialized to default 0
     Node *p = new Node;
     // give new node passed datum value
     p->datum = datum;
-    // assign new node ptr to current first node
-    p->next = first;
-    // assign current first node prev ptr to new node
-    first->prev = p;
-    // reassign first to new node (that is pushed front)
-    first = p;
-    // increment size
+    p->next = nullptr;
+    p->prev = nullptr;
+    if (empty()) {
+      first = last = p;
+    }
+    else if (size() == 1) {
+      first = p;
+      last->prev = p;
+      p->next = last;
+    }
+    else {
+      p->next = first;
+      first->prev = p;
+      first = p;
+    }
+    // // increment size
     ++_size; 
   }
 
@@ -65,10 +73,20 @@ public:
     Node *p = new Node;
     p->datum = datum;
     p->next = nullptr;
-    last->next = p;
+    p->prev = nullptr;
+    // if new list - use if statement here
+    // pop front vs pop back - only 1 thing - what happens?
+      // reset last & first to null
+
+    // segfault happens when accessing nullptr
+    // should work on an empty list
     if (empty()) {
       first = last = p;
-      p->prev = p->next = nullptr;
+    }
+    else if (size() == 1) {
+      last = p;
+      first->next = p;
+      p->prev = first;
     }
     else {
       p->prev = last;
@@ -84,8 +102,14 @@ public:
   void pop_front() {
     assert(!empty());
     Node *aux = first;
-    first = first->next;
-    first->prev = nullptr;
+    if (size() != 1) {
+      first = first->next;
+      first->prev = nullptr;
+    }
+    else {
+      first = nullptr;
+      last = nullptr;
+    }
     delete aux;
     --_size;
   }
@@ -99,12 +123,18 @@ public:
     Node *aux_ptr = new Node;
     // save address of last node to aux ptr
     aux_ptr = last;
-    // save prev ptr of current last node to last ptr in list
-    last = last->prev;
+    if (size() != 1) {
+      // save prev ptr of current last node to last ptr in list
+      last = last->prev;
+      // make next of updated last node = 0 (null ptr)
+      last->next = nullptr; 
+    }
+    else {
+      first = nullptr;
+      last = nullptr;
+    }
     // delete old last node through aux node ptr
     delete aux_ptr;
-    // make next of updated last node = 0 (null ptr)
-    last->next = nullptr; 
     // decrease size
     --_size;
   }
@@ -125,10 +155,11 @@ public:
 
 // DEFAULT LIST CONSTRUCTOR
   List()
-   : first(nullptr), last(nullptr) { }
+   : first(nullptr), last(nullptr), _size(0) { }
 
 // COPY LIST CONSTRUCTOR
-  List(const List &other) {
+  List(const List &other)
+   : _size(other.size()) {
     copy_all(other);
   }
 
