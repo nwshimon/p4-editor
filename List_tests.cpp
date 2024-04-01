@@ -7,158 +7,156 @@ using namespace std;
 
 // public tests
 
-// TEST(test_list_default_ctor) {
-//     List<int> empty_list;
-//     ASSERT_TRUE(empty_list.empty());
-// }
+TEST(test_list_default_ctor) {
+    List<int> empty_list;
+    ASSERT_TRUE(empty_list.empty());
+}
 
-// TEST(test_traversal) {
-//     List<int> list;
-//     for (int i = 0; i < 5; ++i) {
-//         list.push_back(i);
-//     }
-//     int j = 0;
-//     for (List<int>::Iterator it = list.begin(); it != list.end(); ++it, ++j) {
-//         ASSERT_EQUAL(*it, j);
-//     }
-//     ASSERT_EQUAL(j, list.size());
-// }
+TEST(test_traversal) {
+    List<int> list;
+    for (int i = 0; i < 5; ++i) {
+        list.push_back(i);
+    }
+    int j = 0;
+    for (List<int>::Iterator it = list.begin(); it != list.end(); ++it, ++j) {
+        ASSERT_EQUAL(*it, j);
+    }
+    ASSERT_EQUAL(j, list.size());
+}
 
 
 // // our tests
 
-// // EMPTY TESTS
-// TEST(check_empty1) { // case where list initially empty and elements are added from back
-//     // empty list
-//     List<int> list;
-//     // add 1,2,3,4 into list
-//     for (int i = 0; i < 5; ++i) {
-//         list.push_back(i);
-//     }
-//     ASSERT_FALSE(list.empty());
-// }
+// EMPTY TESTS
+TEST(check_empty1) { // case where list initially empty and elements are added from back
+    // empty list
+    List<int> list;
+    // add 1,2,3,4 into list
+    for (int i = 0; i < 5; ++i) {
+        list.push_back(i);
+    }
+    ASSERT_FALSE(list.empty());
+}
 
-// TEST(check_empty2) { // case where list = empty
-//     // empty list
-//     List<int> list;
-//     ASSERT_TRUE(list.empty());
-// }
+TEST(check_empty2) { // case where list = empty
+    // empty list
+    List<int> list;
+    ASSERT_TRUE(list.empty());
+}
 
-// TEST(check_empty3) { // case where elements all are deleted from back
-//     // empty list
-//     List<int> list;
-//     // add 1,2,3,4 into list
-//     for (int i = 0; i < 5; ++i) {
-//         list.push_back(i);
-//     }
-//     // delete 1,2,3,4 from list
-//     for (int i = 0; i < 5; ++i) {
-//         list.pop_back();
-//     }
-//     ASSERT_TRUE(list.empty());
-// }
+TEST(check_empty3) { // case where elements all are deleted from back
+    // empty list
+    List<int> list;
+    // add 0,1,2,3,4 into list
+    for (int i = 0; i < 5; ++i) {
+        list.push_back(i);
+    }
+    // delete 0,1,2,3,4 from list
+    for (int i = 0; i < 5; ++i) {
+        list.pop_back();
+    }
+    ASSERT_TRUE(list.empty());
+}
 
-// TEST(check_empty4) { // case where elements all are deleted from front
-//     // empty list
-//     List<int> list;
-//     // add 1,2,3,4 into list
-//     for (int i = 0; i < 5; ++i) {
-//         list.push_back(i);
-//     }
-//     // delete 1,2,3,4 from list
-//     for (int i = 0; i < 5; ++i) {
-//         list.pop_front();
-//     }
-//     ASSERT_TRUE(list.empty());
-// }
-
-
-// // SIZE TESTS
-// TEST(check_size1) { // simple case
-//     // empty list
-//     List<int> list;
-//     // add 1,2,3,4 into list
-//     for (int i = 0; i < 5; ++i) {
-//         list.push_back(i);
-//     }
-//     ASSERT_TRUE(list.size() == 4);
-// }
-
-// TEST(check_size2) { // case where elements all are deleted from back
-//     // empty list
-//     List<int> list;
-//     // add 1,2,3,4 into list
-//     for (int i = 0; i < 5; ++i) {
-//         list.push_back(i);
-//     }
-//     // delete 1,2,3,4 from list
-//     for (int i = 0; i < 5; ++i) {
-//         list.pop_front();
-//     }
-//     ASSERT_TRUE(list.size() == 0);
-// }
-
-// TEST(check_size3) { // progressive check as nodes added 
-//     // empty list
-//     List<int> list;
-//     // add 1,2,3,4 into list
-//     for (int i = 0; i < 5; ++i) {
-//         list.push_back(i);
-//         ASSERT_TRUE(list.size() == i);
-//     }
-// }
-
-// TEST(check_size4) { // progressive check as nodes deleted 
-//     // empty list
-//     List<int> list;
-//     // add 1,2,3,4 into list
-//     for (int i = 0; i < 5; ++i) {
-//         list.push_back(i);
-//     }
-//     // delete 1,2,3,4 from list
-//     for (int i = 0; i < 5; ++i) {
-//         list.pop_front();
-//         ASSERT_TRUE(list.size() == i);
-//     }
-// }
+TEST(check_empty4) { // case where elements all are deleted from front
+    // empty list
+    List<int> list;
+    // add 0,1,2,3,4 into list
+    for (int i = 0; i < 5; ++i) {
+        list.push_back(i);
+    }
+    // delete 0,1,2,3,4 from list
+    for (int i = 0; i < 5; ++i) {
+        list.pop_front();
+    }
+    ASSERT_TRUE(list.empty());
+}
 
 
+// SIZE TESTS
+TEST(check_size1) { // simple case
+    // empty list
+    List<int> list;
+    // add 0,1,2,3,4 into list
+    for (int i = 0; i < 5; ++i) {
+        list.push_back(i);
+    }
+    ASSERT_EQUAL(list.size(), 5);
+}
+
+TEST(check_size2) { // case where elements all are deleted from front
+    // empty list
+    List<int> list;
+    // add 1,2,3,4 into list
+    for (int i = 0; i < 5; ++i) {
+        list.push_back(i);
+    }
+    // delete 1,2,3,4 from list
+    for (int i = 0; i < 5; ++i) {
+        list.pop_front(); 
+    }
+    ASSERT_TRUE(list.size() == 0);
+}
+
+TEST(check_size3) { // progressive check as nodes added 
+    // empty list
+    List<int> list;
+    // add 0,1,2,3,4 into list
+    for (int i = 0; i < 5; ++i) {
+        list.push_back(i);
+        ASSERT_EQUAL(list.size(), i + 1);
+    }
+}
+
+TEST(check_size4) { // progressive check as nodes deleted 
+    // empty list
+    List<int> list;
+    // add 0,1,2,3,4 into list
+    for (int i = 0; i < 5; ++i) {
+        list.push_back(i);
+    }
+    // delete 0,1,2,3,4 from list
+    for (int i = 0; i < 5; ++i) {
+        list.pop_front();
+        ASSERT_EQUAL(list.size(), 4 - i);
+    }
+}
 
 // // NEED FIX
 
 // // TEST FRONT
-// TEST(check_front1) { // simple int list case
-//     // empty list
-//     List<int> list;
-//     // add 1,2,3,4 into list
-//     for (int i = 0; i < 5; ++i) {
-//         list.push_back(i);
-//     }
-//     ASSERT_TRUE(list.front() == 1);
-// }
+TEST(check_front1) { // simple int list case
+    // empty list
+    List<int> list;
+    // add 0,1,2,3,4 into list
+    for (int i = 0; i < 5; ++i) {
+        list.push_back(i);
+    }
+    ASSERT_TRUE(list.front() == 0);
+}
 
-// TEST(check_front2) { // simple char list case
-//     // empty list
-//     List<char> list;
-//     // add 1,2,3,4 into list
-//     for (char i = 'a'; i < 'e'; ++i) {
-//         list.push_back(i);
-//     }
-//     ASSERT_TRUE(list.front() == 'a');
-// }
+TEST(check_front2) { // simple char list case
+    // empty list
+    List<char> list;
+    // add a, b, c, d, e into list
+    for (char i = 'a'; i < 'e'; ++i) {
+        list.push_back(i);
+    }
+    ASSERT_EQUAL(list.front(), 'a');
+}
 
 // TEST(check_front3) { // progressive check case with pop front
 //     // empty list
 //     List<char> list;
-//     // add 1,2,3,4 into list
+//     // add a,b,c,d,e into list
 //     for (char i = 'a'; i < 'e'; ++i) {
 //         list.push_back(i);
 //     }
-//     // delete 1,2,3,4 from list
-//     for (char i = 'a'; i < 'e'; ++i) {
+//     // delete a,b,c,d,e from list
+//     for (int i = 0; i < 5; ++i) {
 //         list.pop_front();
-//         ASSERT_TRUE(list.front() == 'a' + i);
 //     }
+// ASSERT_TRUE(list.front() == 'e');
 // }
 
 // TEST(check_front4) { // progressive check case with push front
@@ -175,28 +173,28 @@ using namespace std;
 //     }
 // }
 
-// // TEST BACK -- recheck logic later its 3am
-// TEST(check_back1) { // simple int list case
-//     // empty list
-//     List<int> list;
-//     // add 1,2,3,4 into list
-//     for (int i = 0; i < 5; ++i) {
-//         list.push_back(i);
-//         cout << i;
-//     }
+// TEST BACK -- recheck logic later its 3am
+TEST(check_back1) { // simple int list case
+    // empty list
+    List<int> list;
+    // add 1,2,3,4 into list
+    for (int i = 0; i < 5; ++i) {
+        list.push_back(i);
+        cout << i;
+    }
 
-//     ASSERT_TRUE(list.back() == 4);
-// }
+    ASSERT_TRUE(list.back() == 4);
+}
 
-// TEST(check_back2) { // simple char list case
-//     // empty list
-//     List<char> list;
-//     // add 1,2,3,4 into list
-//     for (char i = 'a'; i < 'e'; ++i) {
-//         list.push_back(i);
-//     }
-//     ASSERT_TRUE(list.back() == 'd');
-// }
+TEST(check_back2) { // simple char list case
+    // empty list
+    List<char> list;
+    // add 1,2,3,4 into list
+    for (char i = 'a'; i < 'e'; ++i) {
+        list.push_back(i);
+    }
+    ASSERT_TRUE(list.back() == 'd');
+}
 
 // TEST(check_back3) { // progressive check case with pop front
 //     // empty list
@@ -242,31 +240,18 @@ using namespace std;
 //     }
 // }
 
-
-
-// TEST(check_begin1) {
-//     List<int> list;
-//     // fills in the list with 1, 2, 3, 4
-//     for (int i = 0; i < 5; ++i) {
-//         list.push_back(i);
-//     }
-//     // makes an iterator pointing at the first node of the list
-//     List<int>::Iterator it = list.begin();
-//     ASSERT_EQUAL(*it, 1); // it dereferenced should give first element
-// }
-
 // TEST(check_begin2) {
 //     // empty list
 //     List<int> list;
 //     // makes an iterator pointing to the beginning of the list
-//     // List<int>::Iterator it = list.begin();
+//     List<int>::Iterator it = list.begin();
 //     // it should be pointing to a nullptr
 //     // ASSERT_FALSE(it);
 // }
 
 TEST(check_pop_front1) { // simple case with one node deleted
     List<int> list;
-    // fills in the list with 1, 2, 3, 4
+    // 1 is in list
     list.push_back(1);
     ASSERT_EQUAL(list.size(), 1);
     list.pop_front(); 
@@ -275,32 +260,35 @@ TEST(check_pop_front1) { // simple case with one node deleted
 
 TEST(check_pop_front2) { // simple case with all nodes deleted
     List<int> list;
-    // adds 1,2,3,4
+    // adds 0,1,2,3,4
     for (int i = 0; i < 5; ++i) {
         list.push_back(i);
     }
-    // pops front elements 1 thru 4
-    for (int i = 0; i < 5; ++i) {
+    // pops front elements 0 thru 4
+    for (int j = 0; j < 5; ++j) {
         list.pop_front();
     }
-    ASSERT_EQUAL(list.size(), 0);
+    ASSERT_EQUAL(list.size(), 0); 
 }
 
 TEST(check_pop_front3) { // checks that first node specifically is deleted
     List<int> list;
-    // adds 1,2,3,4
+    // adds 0,1,2,3,4
     for (int i = 0; i < 5; ++i) {
         list.push_back(i); 
     } 
-    // pops front element '1'
+    // pops front element '0'
     list.pop_front(); 
+    int size = list.size();
+    int curr_first_node = list.front();
+    cout << size << curr_first_node;
     // new first->datum should be 2 bc 1 was 'popped' from front
-    ASSERT_EQUAL(list.front(), 2); 
+    ASSERT_EQUAL(list.front(), 1); 
 }
 
 TEST(check_pop_back1) {
     List<int> list;
-    // fills in the list with 1, 2, 3, 4
+    // fills in the list with 0,1, 2, 3, 4
     list.push_back(1);
     ASSERT_EQUAL(list.size(), 1);
     list.pop_back(); 
@@ -309,7 +297,7 @@ TEST(check_pop_back1) {
 
 TEST(check_pop_back2) {
     List<char> list;
-    // adds 1,2,3,4 to list
+    // adds 0,1,2,3,4 to list
     for (char i = 0; i < 5; ++i) {
         list.push_back(i);
     }
@@ -322,7 +310,7 @@ TEST(check_pop_back2) {
 
 TEST(check_pop_back3) { // checks that first node specifically is deleted
     List<int> list;
-    // adds 1,2,3,4
+    // adds 0,1,2,3,4
     for (int i = 0; i < 5; ++i) {
         list.push_back(i); 
     } 
@@ -335,7 +323,7 @@ TEST(check_pop_back3) { // checks that first node specifically is deleted
 TEST(check_push_front1) { // simple push front check
     // empty list
     List<int> list;
-    // add 1,2,3,4 into list
+    // add 0,1,2,3,4 into list
     for (int i = 0; i < 5; ++i) {
         list.push_front(i);
     }
@@ -345,12 +333,146 @@ TEST(check_push_front1) { // simple push front check
 TEST(check_push_front2) { // simple push front datum check
     // empty list
     List<int> list;
-    // add 1,2,3,4 into list so it's {4,3,2,1}
+    // add 0,1,2,3,4 into list so it's {4,3,2,1,0}
     for (int i = 0; i < 5; ++i) {
         list.push_front(i);
     }
     ASSERT_TRUE(list.front() == 4);
 }
+
+TEST(check_self_assignment_operator) {
+    List<int> list1;
+    List<int>* list_ptr = &list1;
+    list1 = *list_ptr;
+    
+    for (int i = 0; i < 5; ++i) {
+        list1.push_back(i);
+    }
+    List<int> list2;
+    list2 = list1;
+}
+
+TEST(check_pointer_star) {
+    List<int> list;
+    list.push_back(2);
+    list.push_back(4);
+    list.push_front(7);
+    // 7, 2, 4
+    List<int>::Iterator it = list.begin();
+    ASSERT_EQUAL(*it, 7);
+    for (int i = 0; i < 2; i++) {
+        it++;
+    }
+    ASSERT_EQUAL(*it, 4);
+}
+
+TEST(check_incrementation_prefix) { 
+    List<int> list;
+    // fills in the list with 0, 1, 2, 3, 4
+    for (int i = 0; i < 5; ++i) {
+        list.push_back(i);
+    }
+    // makes an iterator pointing at the first node of the list
+    List<int>::Iterator it = list.begin();
+    // prefix ++ 
+    for (int i = 0; i < 3; i++) {
+        ++it;
+    }
+    ASSERT_TRUE(*it == 3);
+}
+
+TEST(check_incrementation_postfix) { 
+    List<int> list;
+    // fills in the list with 0, 1, 2, 3, 4
+    for (int i = 0; i < 5; i++) {
+        list.push_back(i);
+    }
+    List<int>::Iterator it = list.begin();
+    int result = *it++;
+    ASSERT_EQUAL(result, 0);
+    ASSERT_EQUAL(*it, 1);
+}
+
+TEST(check_decrementation_prefix) { 
+    List<int> list;
+    // fills in the list with 0, 1, 2, 3, 4
+    for (int i = 0; i < 5; ++i) {
+        list.push_back(i);
+    }
+    // makes an iterator pointing at the first node of the list
+    List<int>::Iterator it = list.begin();
+    // prefix ++ 
+    for (int i = 0; i < 2; i++) {
+        ++it;
+    }
+    --it;
+    ASSERT_TRUE(*it == 1);
+}
+
+TEST(check_decrementation_postfix) { 
+    List<int> list;
+    // fills in the list with 0, 1, 2, 3, 4
+    for (int i = 0; i < 5; i++) {
+        list.push_back(i);
+    }
+    List<int>::Iterator it = list.begin();
+    it++;
+    // for (int i = 0; i < 5; i++) {
+    //     it++;
+    // }
+    int result = *it--;
+    ASSERT_EQUAL(result, 1);
+    ASSERT_EQUAL(*it, 0);
+}
+
+// for when it1 and it2 
+TEST(check_bool_equal) { 
+    List<int> list;
+    // fills in the list with 0, 1, 2, 3, 4
+    for (int i = 0; i < 5; i++) {
+        list.push_back(i);
+    }
+    List<int>::Iterator it1 = list.end();
+    List<int>::Iterator it2 = list.begin();
+    ASSERT_FALSE(it1 == it2);
+}
+
+// for when it1 and it2 are pointing to different lists
+    // but the same datum
+TEST(check_bool_unequal) { 
+    List<int> list1;
+    // fills in the list with 0, 1, 2, 3, 4
+    for (int i = 0; i < 5; i++) {
+        list1.push_back(i);
+    }
+    List<int> list2;
+    // fills in the list with 4, 3, 2, 1, 0
+    for (int i = 0; i < 5; i++) {
+        list2.push_front(i);
+    }
+
+    List<int>::Iterator it1 = list1.begin();
+    List<int>::Iterator it2 = list2.begin();
+    for (int i = 0; i < 3; i++) {
+        it1++;
+        it2++;
+    }
+
+    ASSERT_TRUE(it1 != it2);
+}
+
+
+// ITERATOR
+//     List<int> list;
+//     // fills in the list with 0, 1, 2, 3, 4
+//     for (int i = 0; i < 5; ++i) {
+//         list.push_back(i);
+//     }
+//     // makes an iterator pointing at the first node of the list
+//     List<int>::Iterator it = list.begin();
+//     ASSERT_EQUAL(*it, 0); // it dereferenced should give first element
+// }
+
 // TEST PUSH BACK
 // TEST POP FRONT
 // TEST POP BACK

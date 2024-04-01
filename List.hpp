@@ -44,7 +44,6 @@ public:
 
   //EFFECTS:  inserts datum into the front of the list
   void push_front(const T &datum) {
-    Node *p = new Node;
     // next and prev initialized to default 0
     Node *p = new Node;
     // give new node passed datum value
@@ -111,7 +110,9 @@ public:
       last = nullptr;
     }
     delete aux;
+    // Decrement the size of the list
     --_size;
+
   }
 
   //REQUIRES: list is not empty
@@ -146,6 +147,7 @@ public:
       pop_front();
       // do we need to assign null values to first and last in list?
     }
+    _size = 0;
   }
 
   // You should add in a default constructor, destructor, copy constructor,
@@ -159,7 +161,7 @@ public:
 
 // COPY LIST CONSTRUCTOR
   List(const List &other)
-   : _size(other.size()) {
+   : first(nullptr), last(nullptr), _size(0) {
     copy_all(other);
   }
 
@@ -333,7 +335,7 @@ public:
 
 
     // add any friend declarations here
-
+  
 
     // construct an Iterator at a specific position in the given List
     Iterator(const List *lp, Node *np)

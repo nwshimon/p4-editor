@@ -23,26 +23,18 @@ TextBuffer::TextBuffer() {
 bool TextBuffer::forward() {
   // if cursor is not past end position
   if (!is_at_end()) {
-    // forward cursor position by one 
+    // so when Hello|\n --> should land on Hello\n|
     cursor++;
-    // if datum of cursor is new line char
-    // if (data_at_cursor() == '\n') {
-    //   // moves cursor to after the newline
-    //   cursor++;
-    //   // increment row
-    //   row++;
-    //   // reset col to first col
-    //   column = 0;
-    //   // increment index
-    //   index += 2;
-    //   return true;
-    // }
-    // if datum is not new line, increment col and index
     column++;
     index++;
     return true;
-    // so when Hello|\n --> should land on Hello\n|
-    // when Hello\n| --> go to next row
+  }
+  // when Hello\n| --> go to next row
+  else if (data_at_cursor() == '\n') {
+    cursor++;
+    column = 0;
+    row++;
+    return true;
   }
   //if cursor past end position return false
   return false;
@@ -127,7 +119,6 @@ void TextBuffer::move_to_row_start() {
 // use compute column?
 void TextBuffer::move_to_row_end() {
 
-  assert(false);
 }
 
 void TextBuffer::move_to_column(int new_column) {
@@ -135,7 +126,6 @@ void TextBuffer::move_to_column(int new_column) {
 }
 
 bool TextBuffer::up() {
-
   return false;
 }
 
