@@ -180,7 +180,6 @@ TEST(check_back1) { // simple int list case
     // add 1,2,3,4 into list
     for (int i = 0; i < 5; ++i) {
         list.push_back(i);
-        cout << i;
     }
 
     ASSERT_TRUE(list.back() == 4);
@@ -213,15 +212,11 @@ TEST(check_back2) { // simple char list case
 
 TEST(check_back4) { // progressive check case with push front
     // empty list
-    List<char> list;
-    // add 1,2,3,4 into list
-    for (char i = 'a'; i < 'e'; ++i) {
+    List<int> list;
+    // add 0,1,2,3,4 into list
+    for (int i = 0; i < 5; i++) {
         list.push_back(i);
-    }
-    // delete 1,2,3,4 from list
-    for (char i = 'e'; i >= 'a'; --i) {
-        list.push_back(i);
-        ASSERT_TRUE(list.front() == 'a' + i);
+        ASSERT_EQUAL(list.back(), i);
     }  
 }  
 
@@ -461,6 +456,35 @@ TEST(check_bool_unequal) {
     ASSERT_TRUE(it1 != it2);
 }
 
+TEST(check_iterator_insert1) { 
+    List<int> list1;
+    List<int>::Iterator it1 = list1.begin();
+    list1.insert(it1, 5);
+    ASSERT_EQUAL(list1.front(), 5);
+    ASSERT_EQUAL(list1.back(), 5);
+}
+
+    // // fills in the list with 0, 1, 2, 3, 4
+    // for (int i = 0; i < 5; i++) {
+    //     list1.insert(it1, i);
+    // }
+    
+
+    // List<int> list2;
+    // // fills in the list with 4, 3, 2, 1, 0
+    // for (int i = 0; i < 5; i++) {
+    //     list2.push_front(i);
+    // }
+
+    // List<int>::Iterator it1 = list1.begin();
+    // List<int>::Iterator it2 = list2.begin();
+    // for (int i = 0; i < 3; i++) {
+    //     it1++;
+    //     it2++;
+    // }
+
+//     ASSERT_TRUE(it1 != it2);
+// }
 
 // ITERATOR
 //     List<int> list;

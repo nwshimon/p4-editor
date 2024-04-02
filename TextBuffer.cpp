@@ -21,30 +21,27 @@ TextBuffer::TextBuffer() {
   //NOTE:     Your implementation must update the row, column, and index
   //          if appropriate to maintain all invariants.
 bool TextBuffer::forward() {
-  
-  // if cursor is not past end position
-  if (!is_at_end()) {
-    // if datum is not new line, do simple forward update 
-      // increment col and index, keep same row
-    column++;
-    index++;
-    // if datum of cursor is new line char
-    if (data_at_cursor() == '\n') {
-      // also increment row
-      row++;
-      // reset col to first col
-      column = 0;
-    }
-     // moves cursor forward
-    cursor++;
-    return true;
+  if (is_at_end()) {
+    return false;
+  }
+   // if datum is not new line, do simple forward update 
+    // increment col and index, keep same row
+  column++;
+  index++;
+  // if datum of cursor is new line char
+  if (data_at_cursor() == '\n') {
+    // also increment row
+    row++;
+    // reset col to first col
+    column = 0;
+  }
+    
+   // moves cursor forward
+  cursor++;
+  return true;
     // so when Hello|\n --> should land on Hello\n|
     // when Hello\n| --> go to next row
-  } // is at end closes
-
-  //if cursor past end position return false
-  return false;
-}
+} // is at end closes
 
 //MODIFIES: *this
   //EFFECTS:  Moves the cursor one position backward and returns true,
