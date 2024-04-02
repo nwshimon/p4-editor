@@ -391,6 +391,10 @@ TEST(check_default_ctor) {
     list.clear();
 }
 
+//  Your tests fail to catch a bug in this function.
+    // Double check that you have tests for the assignment
+    // operator specifically,.g. not something like List list2 = list;
+    // which uses the copy constructor. Assignment would require a separate line like list2 = list; after list2 has already been defined.
 TEST(check_assignment_operator) {
     // tests copying into another list
     List<int> list;
@@ -401,7 +405,8 @@ TEST(check_assignment_operator) {
     // 2 6 5 7
 
     // uses the assignment operator to copy into a List variable
-    List<int> copy = list;
+    List<int> copy;
+    copy = list;
     // checks if size & front of copy and list are the same
     ASSERT_EQUAL(list.size(), copy.size());
     ASSERT_EQUAL(list.front(), copy.front());
@@ -423,6 +428,27 @@ TEST(check_assignment_operator) {
     list2.clear();
     copy.clear();
 }
+
+//Ensure your tests verify the assignment operator works correctly,
+    // such that the RHS target of the assignment now contains the same elements
+    // as the LHS source of the assignment.
+TEST(check_assignment_operator2) {
+    List<int> list;
+    // 0 1 2 3 4
+    for (int i = 0; i < 5; i++) {
+        list.push_front(i);
+    }
+    List<int> copy;
+    copy = list;
+    List<int>::Iterator iter_list = list.begin();
+    List<int>::Iterator iter_copy = copy.begin();
+    for (int i = 0; i < 5; i++) {
+        iter_list++;
+        iter_copy++;
+        ASSERT_EQUAL(*iter_list, *iter_copy);
+    }
+}
+
 
 TEST(check_copy_ctor) {
     List<int> list;
@@ -514,23 +540,28 @@ TEST(check_iterator_insert2) {
 }
 
 // checks inserting new line - where would iterator land?
+// FALSE POSITIVE?
 TEST(check_iterator_insert_newline) { 
     List<int> list1;
     List<int>::Iterator it1 = list1.begin();
     // 0,1,2
     for (int i = 0; i < 3; i++) {
-        list1.push_back(i);
-        it1++;
-        // when i = 2: lands it1 past the end
+        list1.push_back(i); // might invalidate iterator for it
+        // might not update pointer in iterator itself
+
+        // pushback doesn't automatically move cursor
+        // to AFTER the inserted element
+        ++it1;
     }
-    ASSERT_EQUAL(it1, list1.end());
-    // goes to 2
+    ASSERT_EQUAL(*it1, 2);
+    // goes to 1
     it1--;
-    List<int>::Iterator it1 = list1.insert(it1, '\n');
-    // inserts \n BEFORE 2
+    ASSERT_EQUAL(*it1, 1);
+    it1 = list1.insert(it1, '\n');
+    // inserts \n BEFORE 1
     ASSERT_EQUAL(*it1, '\n');
     it1++;
-    ASSERT_EQUAL(*it1, 2);
+    ASSERT_EQUAL(*it1, 1);
 }
 
 // tests erase on multiple node list

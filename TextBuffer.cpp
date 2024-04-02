@@ -25,22 +25,33 @@ bool TextBuffer::forward() {
     // increment col and index, keep same row
   column++;
   index++;
+  //  // if datum of cursor is new line char
+  // if (data_at_cursor() == '\n') {
+  //   // reset col to first col
+  //   column = 0;
+  //   // also increment row
+  //   row++;
+  // }
+  // cursor++;
+
   // if datum of cursor is new line char
   // ACTUALLY: trying to check if data at cursor is RIGHT AFTER NEWLINE
     // AFTER we've already moved cursor forward
   if (data_at_cursor() == '\n') {
+    row++;
     // accounts for when the cursor is at newline,
       // but doesn't have a next node
       // shouldn't update row, column should already be at end
     // cursor is moved forward within this if statement
-    if (++cursor == data.end()) { }
+    if (++cursor != data.end()) {
+      column = 0;
+    }
     // accounts for when the cursor is at newline
       // and has a next node
     else {
       // reset col to first col
       column = 0;
       // also increment row
-      row++;
     }
   }
   else {
@@ -88,12 +99,13 @@ void TextBuffer::insert(char c) {
 }
 
 // row and col doesn't change for this one
+// when you try to remove twice: breaks
 bool TextBuffer::remove() {
   if (is_at_end()) {
     return false;
   }
   // erase repoints the cursor to the node AFTER the erased node
-  data.erase(cursor);
+  cursor = data.erase(cursor);
   return true;
 }
 
@@ -109,12 +121,19 @@ void TextBuffer::move_to_row_start() {
   if (column == 0 && cursor == data.begin()) { // we're alr at row start
     return;
   }
+
+  // check if not at the end iterator then decrement first
+  // BEFORE entering while loop
+  if (cursor != data.end()) {
+    backward();
+  }
+
   // while not new line (bc it would go up a row)
     // so we'd alr be at start of row
   // and not start of list 
     // bc we'd alr be at start of first row (where there's no \n before)
   while (column != 0 && data_at_cursor() != '\n'
-       && cursor != data.begin()) {
+         && cursor != data.begin()) {
     backward(); // go backward once -alr accounts for index decrement
   }
 }
@@ -124,12 +143,13 @@ void TextBuffer::move_to_row_start() {
   // or the last actual character?
 void TextBuffer::move_to_row_end() {
   // for when the cursor is already at newline character
-  if (data_at_cursor() == '\n' || cursor == data.end()) {
+  if (cursor == data.end() || data_at_cursor() == '\n') {
     return;
   }
 
   // moving the cursor forward until it hits newline or end of data
-  while (data_at_cursor() != '\n' && cursor != data.end()) {
+  // !! evaluated from left to right - order matters in if statements
+  while (cursor != data.end() && data_at_cursor() != '\n') {
     forward();
   }
 }

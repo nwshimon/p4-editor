@@ -15,6 +15,7 @@ TEST(textbuffer_insert) {
 
 TEST(textbuffer_insert_newline) {
 // on line.exe: steady^<<<<^>>^>>^@<<@^^
+// steady@<<@^^
   TextBuffer buffer;
   buffer.insert('s');
   buffer.insert('t');
