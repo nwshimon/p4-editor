@@ -24,20 +24,19 @@ bool TextBuffer::forward() {
   if (is_at_end()) {
     return false;
   }
+    
+   // if datum is not new line, do simple forward update 
+    // increment col and index, keep same row
+  column++;
+  index++;
   // if datum of cursor is new line char
   if (data_at_cursor() == '\n') {
     // reset col to first col
     column = 0;
     // also increment row
     row++;
-    cursor++;
-    return true;
   }
-  
-   // if datum is not new line, do simple forward update 
-    // increment col and index, keep same row
-  column++;
-  index++;
+    
    // moves cursor forward
   cursor++;
   return true;
@@ -278,7 +277,6 @@ int TextBuffer::size() const {
 std::string TextBuffer::stringify() const {
   return std::string(data.begin(), data.end());
 }
-
 
   // compute the column when moving left from the
   //          beginning of a line to the end of the previous one.

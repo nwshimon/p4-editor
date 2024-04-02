@@ -359,7 +359,7 @@ public:
   //         Returns An iterator pointing to the element that followed the
   //         element erased by the function call
   Iterator erase(Iterator i) {
-    assert(i.node_ptr != nullptr);
+    assert(i.list_ptr == this && i.node_ptr != nullptr);
     // i->node_ptr dereferences node_ptr into its T object type
 
     // for when the cursor is in the middle of the list
@@ -377,14 +377,16 @@ public:
       i.node_ptr = i.node_ptr->next;
       // erase nte
       delete to_erase;
+      --_size;
     }
     // for when the cursor is at the end of the list 
       // if next is not null ptr - not last
     else if (!i.node_ptr->next) {
       // remove last element in list
       pop_back();
-      // i points to last
-      i.node_ptr = last;
+      // i points to past the end (which is the element that "followed
+        // the erased")
+      i = end();
     }
     // for when the cursor is at the beginning of the list
       // if prev is not null ptr - not first

@@ -73,6 +73,7 @@
     "vector": "cpp",
     "filesystem": "cpp",
     "functional": "cpp",
-    "iostream": "cpp"
+    "iostream": "cpp",
+    "iosfwd": "cpp"
   }
 }
