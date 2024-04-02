@@ -20,21 +20,32 @@ bool TextBuffer::forward() {
   if (is_at_end()) {
     return false;
   }
-    
+  
    // if datum is not new line, do simple forward update 
     // increment col and index, keep same row
   column++;
   index++;
   // if datum of cursor is new line char
+  // ACTUALLY: trying to check if data at cursor is RIGHT AFTER NEWLINE
+    // AFTER we've already moved cursor forward
   if (data_at_cursor() == '\n') {
-    // reset col to first col
-    column = 0;
-    // also increment row
-    row++;
+    // accounts for when the cursor is at newline,
+      // but doesn't have a next node
+      // shouldn't update row, column should already be at end
+    // cursor is moved forward within this if statement
+    if (++cursor == data.end()) { }
+    // accounts for when the cursor is at newline
+      // and has a next node
+    else {
+      // reset col to first col
+      column = 0;
+      // also increment row
+      row++;
+    }
   }
-    
-   // moves cursor forward
-  cursor++;
+  else {
+    ++cursor;
+  }
   return true;
     // so when Hello|\n --> should land on Hello\n|
     // when Hello\n| --> go to next row
@@ -285,7 +296,10 @@ int TextBuffer::compute_column() const {
     copy--;
     counter++;
   }
-  // if cursor is at the end of the row
+  // if cursor is at the end of the row - still need to compute column
+  // even if on newline
+    // makes it so the main while loop below can still execute
+    // '\n' condition would not let code enter while loop
   else if (*cursor == '\n') {
     copy--;
     counter++;

@@ -36,6 +36,7 @@ TEST(textbuffer_insert_newline) {
   ASSERT_EQUAL(buffer.data_at_cursor(), 'y');
   ASSERT_EQUAL(buffer.get_row(), 2);
   ASSERT_EQUAL(buffer.get_column(), 0);
+  // ASSERT_EQUAL(buffer.get_index(), )
   buffer.up();
   buffer.up();
   ASSERT_EQUAL(buffer.get_row(), 1);

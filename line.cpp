@@ -24,7 +24,7 @@ void visualize_buffer(TextBuffer &buffer) {
     }
     char c = buffer.data_at_cursor();
     if (c == '\n') {
-      cout << "\\n";
+      cout << "\\n"; // just puts \n on the terminal
     } else {
       cout << c;
     }
