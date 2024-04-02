@@ -468,7 +468,17 @@ TEST(check_iterator_insert2) {
     List<int> list1;
     List<int>::Iterator it1 = list1.begin();
     List<int>::Iterator it2 = list1.insert(it1, 11);
-    cout << *it2;
+    ASSERT_EQUAL(*it2, 11);
+}
+
+TEST(check_iterator_insert_newline) { 
+    List<int> list1;
+    List<int>::Iterator it1 = list1.begin();
+    for (int i = 0; i < 3; i++) {
+        list1.push_back(i);
+    }
+    List<int>::Iterator it2 = list1.insert(it1, '\n');
+    ASSERT_EQUAL(*it2, '\n');
 }
 
     // // fills in the list with 0, 1, 2, 3, 4

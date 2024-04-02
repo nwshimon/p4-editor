@@ -100,7 +100,7 @@ public:
   //EFFECTS:  removes the item at the front of the list
   void pop_front() {
     assert(!empty());
-    Node *aux = first;
+    Node *to_delete = first;
     if (size() != 1) {
       first = first->next;
       first->prev = nullptr;
@@ -109,7 +109,7 @@ public:
       first = nullptr;
       last = nullptr;
     }
-    delete aux;
+    delete to_delete;
     // Decrement the size of the list
     --_size;
 
@@ -121,9 +121,8 @@ public:
   void pop_back() {
     assert(!empty());
     // aux ptr
-    Node *aux_ptr = new Node;
+    Node *to_delete = last;
     // save address of last node to aux ptr
-    aux_ptr = last;
     if (size() != 1) {
       // save prev ptr of current last node to last ptr in list
       last = last->prev;
@@ -135,7 +134,7 @@ public:
       last = nullptr;
     }
     // delete old last node through aux node ptr
-    delete aux_ptr;
+    delete to_delete;
     // decrease size
     --_size;
   }
@@ -438,63 +437,7 @@ public:
     }
     ++_size;
     return Iterator(this, p);
-
-    // if (!i.node_ptr) { // when empty OR past the end
-    //   if (empty()) { // empty list means first and last are nullptrs
-    //     first = last = p;
-    //   }
-    //   else { // for when i is in the back of a list
-    //     first->prev = p;
-    //     p->next = p;
-        
-    //   }
-    // }
   }
-
-    // p->next = i.node_ptr;
-    // stores a copy of original iterator i into aux
-
-    // // for when cursor is in the middle of the list
-    // if (!i.node_ptr || !i.node_ptr->prev) {
-    //   // p would be the first element
-    //   push_front(datum);
-    //   i.node_ptr = first;
-    // }
-    // else if (!i.node_ptr->next) {
-    //   push_back(datum);
-    //   i.node_ptr = last;
-    // }
-    // else if (i.node_ptr->prev && i.node_ptr->next) {
-    //   // aux is now at node_ptr->prev (og position - 1)
-    //   aux--;
-    //   // assigns the next ptr of the element before insertion to p
-    //   i.node_ptr->prev = p;
-    //   // assigns the prev ptr of inserted element p to the element before insertion
-    //   p->prev = aux.node_ptr;
-    //   // assigns the og node's prev ptr to inserted element p 
-    //   aux.node_ptr->next = p;
-    // }
-    // i.node_ptr = p;
-    // return i;
-
-  //       // for when cursor is in the middle of the list
-  //   if (!i.node_ptr || !i.node_ptr->prev) {
-  //     // p would be the first element
-  //     push_front(datum);
-  //   }
-  //   else if (!i.node_ptr->next) {
-  //     push_back(datum);
-  //   }
-  //   else if (i.node_ptr->prev && i.node_ptr->next) {
-  //     i.node_ptr->prev = p;
-  //     p->next = i.node_ptr;
-  //     i--;
-  //     // i is now at node_ptr->prev (og position - 1)
-  //     i.node_ptr->next = p;
-  //     p->prev = i.node_ptr;
-  //   }
-  //   return aux;
-  // }
 
 };//List
 

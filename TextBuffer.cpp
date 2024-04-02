@@ -24,18 +24,20 @@ bool TextBuffer::forward() {
   if (is_at_end()) {
     return false;
   }
+  // if datum of cursor is new line char
+  if (data_at_cursor() == '\n') {
+    // reset col to first col
+    column = 0;
+    // also increment row
+    row++;
+    cursor++;
+    return true;
+  }
+  
    // if datum is not new line, do simple forward update 
     // increment col and index, keep same row
   column++;
   index++;
-  // if datum of cursor is new line char
-  if (data_at_cursor() == '\n') {
-    // also increment row
-    row++;
-    // reset col to first col
-    column = 0;
-  }
-    
    // moves cursor forward
   cursor++;
   return true;
@@ -220,14 +222,20 @@ bool TextBuffer::up() {
 bool TextBuffer::down() {
   int copy_col = column;
   int target_row = row + 1;
-  // while not at newline
+  // checks if the cursor has been placed past the end yet
+    // - if already at past the end, return false
+  if (cursor == data.end()) {
+    return false;
+  }
+// TO CHECK IF AT LAST ROW:
+  // while not at newline, keep moving forward
   while (data_at_cursor() != '\n') {
     // moves cursor forward
     forward();
     if (cursor == data.end()) { // if cursor hits end, then return false
       move_to_row_end();
       return false;
-    }
+      }
     // otherwise: once newline is encountered, break out of the while loop
   }
   while (row != target_row) {
