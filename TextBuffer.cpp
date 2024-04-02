@@ -54,31 +54,28 @@ bool TextBuffer::forward() {
   //          if appropriate to maintain all invariants.
 bool TextBuffer::backward() {
   // if cursor is not at first position
-  if (cursor != data.begin()) { 
-  // backward cursor position by one 
-    cursor--;
-    // if datum of cursor is new line char 
-    if (data_at_cursor() == '\n') { 
-      // decrement row
-      row--;
-      // decrement col
-      column = compute_column();
-      // increment index
-      index -= 2;
-      return true;
-    }
-    // if datum is not new line, increment col and index
-    column--;
-    index--;
-    return true;
+  if (cursor == data.begin()) {
+    return false;
   }
-  //if cursor past end position return false
-  return false;
+  // backward cursor position by one 
+  cursor--;
+  column--;
+
+  // if at begining of a line and you go backwards,
+    // you end up with a negative column
+  if (column < 0) {
+    row--;
+    column = compute_column();
+  }
+  
+    // if datum is not new line, increment col and index
+  index--;
+  return true;
 }
 
 // row and col changes for this one
 void TextBuffer::insert(char c) {
-  data.insert(cursor, c);
+  cursor = data.insert(cursor, c);
   forward();
 }
 
@@ -108,10 +105,10 @@ void TextBuffer::move_to_row_start() {
     // so we'd alr be at start of row
   // and not start of list 
     // bc we'd alr be at start of first row (where there's no \n before)
-  while (data_at_cursor() != '\n' && cursor != data.begin()) {
+  while (column != 0 && data_at_cursor() != '\n'
+       && cursor != data.begin()) {
     backward(); // go backward once -alr accounts for index decrement
   }
-  assert(column == 0);
 }
 
 // use compute column?
@@ -129,13 +126,29 @@ void TextBuffer::move_to_row_end() {
   }
 }
 
+  //REQUIRES: new_column >= 0
+  //MODIFIES: *this
+  //EFFECTS:  Moves the cursor to the given column in the current row,
+  //          if it exists. If the row does not have that many columns,
+  //          moves to the end of the row (the newline character that
+  //          ends the row, or the past-the-end position if the row is
+  //          the last one in the buffer).
+  //NOTE:     Your implementation must update the row, column, and index
+  //          if appropriate to maintain all invariants.
 void TextBuffer::move_to_column(int new_column) {
   assert(new_column >= 0);
+  if (new_column > column) {
+    forward();
+  }
+  else if (new_column < column) {
+    backward();
+  }
 
   // SHOULD account for when new column is past the max col in the row
     // by iterating until the cursor has hit newline
     // or hit past the end
-  while (column != new_column && data_at_cursor() != '\n' && cursor != data.end()) {
+  while (column != new_column && data_at_cursor() != '\n'
+         && cursor != data.end()) {
     // for when the desired column is to the right of the current column
     if (new_column > column) {
       forward();
@@ -146,6 +159,7 @@ void TextBuffer::move_to_column(int new_column) {
     }
     // for when new column is the same as the current column
     else {
+      move_to_row_end();
       return;
     }
   }
@@ -163,18 +177,27 @@ void TextBuffer::move_to_column(int new_column) {
   //NOTE:     Your implementation must update the row, column, and index
   //          if appropriate to maintain all invariants.
 bool TextBuffer::up() {
-  int copy_col = column;
+  int target_col = column;
   if (row != 1) {
+    // at the end, we want our cursor to land on row-1
+    int target_row = row - 1;
     // goes back until the row increases by 1 (which is the row we want to be on)
-    while (row != row - 1) {
+    while (row != target_row) {
       backward();
       // row decrements in backward()
     }
     // if there is an existing node before the newline on the row above
       // (which backward() returns in a bool)
-    if (backward()) {
-      // goes back until the cursor hits the original column
-      while (column != copy_col) {
+    
+    // if the cursor arrives at a column that is less than the target column
+      // after going backwards
+    if (column < target_col) {
+      // move the cursor to the end of the row
+      move_to_row_end();
+      return true;
+    }
+    else {
+      while (column != target_col) {
         backward();
       }
     }
@@ -195,7 +218,29 @@ bool TextBuffer::up() {
   //NOTE:     Your implementation must update the row, column, and index
   //          if appropriate to maintain all invariants.
 bool TextBuffer::down() {
-  return false;
+  int copy_col = column;
+  int target_row = row + 1;
+  // while not at newline
+  while (data_at_cursor() != '\n') {
+    // moves cursor forward
+    forward();
+    if (cursor == data.end()) { // if cursor hits end, then return false
+      move_to_row_end();
+      return false;
+    }
+    // otherwise: once newline is encountered, break out of the while loop
+  }
+  while (row != target_row) {
+    forward();
+    // row increments in forward()
+  }
+  if (forward()) {
+    while (column != copy_col && cursor != data.end()
+           && data_at_cursor() != '\n') {
+      forward();
+    }
+  }
+  return true;
 }
 
 bool TextBuffer::is_at_end() const {
@@ -227,23 +272,21 @@ std::string TextBuffer::stringify() const {
 }
 
 
-// assuming that compute_column() is just meant for backward()
   // compute the column when moving left from the
   //          beginning of a line to the end of the previous one.
 int TextBuffer::compute_column() const {
-  // meant to be at the newline character
-  // row would alraedy be changed but 
-  TextBuffer copy = *this; // what if textbuffer is long lolz
-  // iterator copy
-  // no need to make copy
-  copy.up();
-  // do copy -- --> reaches row start
+  Iterator copy = cursor;
   int counter = 0;
-  while (copy.data_at_cursor() != '\n') {
-    copy.forward();
+  // if cursor is at the end of the row
+  if (*cursor == '\n') {
+    copy--;
     counter++;
   }
-  return counter; 
+  while (*copy != '\n' && copy != data.begin()) {
+    copy--;
+    counter++;
+  }
+  return counter;
 }
 // need to move cursor back until hitting smth
 // make a copy cursor

@@ -408,46 +408,47 @@ public:
     Node *p = new Node;
     p->datum = datum;
     p->next = p->prev = nullptr;
+    // Iterator copy = Iterator(this, p);
+    
+    if (!i.node_ptr) { // when empty OR past the end
+      if (empty()) {
+        first = last = p;
+      }
+      else {
+        last->next = p;
+        p->prev = last;
+        last =  p;
+      }
+    }
+    else { // insert BEFORE the position of i
+      if (!i.node_ptr->prev) { // if iterator is at beginning of list
+        // sets first element to new node
+        first = p;
+      }
+      else {
+        // sets the previous element's "next" to the new node
+        i.node_ptr->prev->next = p;
+      }
+      // sets previous node of new to previous node of current position
+      p->prev = i.node_ptr->prev;
+      // sets next node of new to the current position node
+      p->next = i.node_ptr;
+      // sets current node's previous to new node
+      i.node_ptr->prev = p;
+    }
+    ++_size;
+    return Iterator(this, p);
 
-    // if (!i.node_ptr) {
-    //   if (empty()) {
+    // if (!i.node_ptr) { // when empty OR past the end
+    //   if (empty()) { // empty list means first and last are nullptrs
     //     first = last = p;
     //   }
-    //   else {
-    //     last->
+    //   else { // for when i is in the back of a list
+    //     first->prev = p;
+    //     p->next = p;
+        
     //   }
     // }
-    // i--;
-    // return Iterator(this, p);
-    Iterator copy = Iterator(this, p);
-    // if you just return an iterator that already points to the new node from here
-      // e.g. Iterator(i.list_ptr, p)
-      // this doesn't ACTUALLY follow the p when youre pushing back or front
-
-  // if i points to nothing OR i is at the beginning of the list
-    if (!i.node_ptr || !i.node_ptr->prev) { 
-      push_front(datum);
-      // first and last of this list are redefined
-      // doesnt this make a new copy of the datum node tho
-      copy.node_ptr = first;
-    }
-  // if i is at the end of a list
-    else if (!i.node_ptr->next) {
-      push_back(datum);
-      // first and last of this list are redefined
-      copy.node_ptr = last;
-    }
-  // if i is in the middle of a list
-    else if (i.node_ptr->prev && i.node_ptr->next) {
-      i.node_ptr->prev = p;
-      p->next = i.node_ptr;
-      i--;
-      i.node_ptr->next = p;
-      p->prev = i.node_ptr;
-      copy.node_ptr = p;
-      ++_size;
-    }
-    return copy;
   }
 
     // p->next = i.node_ptr;

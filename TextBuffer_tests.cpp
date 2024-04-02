@@ -5,9 +5,10 @@ using namespace std;
 
 // Add your test cases here
 
-TEST(test_stub) {
-    // Add test code here
-    ASSERT_TRUE(true);
+TEST(textbuffer_insert) {
+  TextBuffer buffer;
+  buffer.insert('e');
+  ASSERT_EQUAL(buffer.data_at_cursor(), 'e');
 }
 
 TEST_MAIN()

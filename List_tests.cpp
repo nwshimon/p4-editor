@@ -464,6 +464,13 @@ TEST(check_iterator_insert1) {
     ASSERT_EQUAL(list1.back(), 5);
 }
 
+TEST(check_iterator_insert2) { 
+    List<int> list1;
+    List<int>::Iterator it1 = list1.begin();
+    List<int>::Iterator it2 = list1.insert(it1, 11);
+    cout << *it2;
+}
+
     // // fills in the list with 0, 1, 2, 3, 4
     // for (int i = 0; i < 5; i++) {
     //     list1.insert(it1, i);
