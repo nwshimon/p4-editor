@@ -4,14 +4,10 @@
 //FIX SYNTAX
 //EFFECTS: Creates an empty text buffer. Its cursor is at the past-the-end
   //         position, with row 1, column 0, and index 0.
-TextBuffer::TextBuffer() {
+TextBuffer::TextBuffer() : row(1), column(0), index(0) {
   // makes cursor attached to the data by assigning cursor to the returned
     // "past end" cursor"
   cursor = data.end();
-  // initialize member vars to default
-  row = 1;
-  column = 0;
-  index = 0;
 }
 
 //MODIFIES: *this
@@ -99,7 +95,7 @@ void TextBuffer::move_to_row_start() {
     // already accounted for by other functions
     // this is assuming we've kept the cursor iterator invariant
     // and the row/column invariant
-  if (column == 0) { // we're alr at row start
+  if (column == 0 && cursor == data.begin()) { // we're alr at row start
     return;
   }
   // while not new line (bc it would go up a row)
@@ -283,8 +279,14 @@ std::string TextBuffer::stringify() const {
 int TextBuffer::compute_column() const {
   Iterator copy = cursor;
   int counter = 0;
+  // if the cursor is past the end, then find the column
+    // of the last element in the row
+  if (cursor == data.end()) {
+    copy--;
+    counter++;
+  }
   // if cursor is at the end of the row
-  if (*cursor == '\n') {
+  else if (*cursor == '\n') {
     copy--;
     counter++;
   }
