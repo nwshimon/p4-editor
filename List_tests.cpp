@@ -193,11 +193,11 @@ TEST(check_back) {
     }
     // progressive check case with push front
     // empty list
-    List<int> list;
+    List<int> list3;
     // add 0,1,2,3,4 into list
     for (int i = 0; i < 5; i++) {
-        list.push_back(i);
-        ASSERT_EQUAL(list.back(), i);
+        list3.push_back(i);
+        ASSERT_EQUAL(list3.back(), i);
     }  
 }
 
@@ -262,29 +262,29 @@ TEST(check_pop_front) {
     list.pop_front(); 
     ASSERT_TRUE(list.empty());
 // simple case with all nodes deleted
-    List<int> list;
+    List<int> list2;
     // adds 0,1,2,3,4
     for (int i = 0; i < 5; ++i) {
-        list.push_back(i);
+        list2.push_back(i);
     }
     // pops front elements 0 thru 4
     for (int j = 0; j < 5; ++j) {
-        list.pop_front();
+        list2.pop_front();
     }
     ASSERT_EQUAL(list.size(), 0); 
 // checks that first node specifically is deleted
-    List<int> list;
+    List<int> list3;
     // adds 0,1,2,3,4
     for (int i = 0; i < 5; ++i) {
-        list.push_back(i); 
+        list3.push_back(i); 
     } 
     // pops front element '0'
-    list.pop_front(); 
-    int size = list.size();
-    int curr_first_node = list.front();
+    list3.pop_front(); 
+    int size = list3.size();
+    int curr_first_node = list3.front();
     cout << size << curr_first_node;
     // new first->datum should be 2 bc 1 was 'popped' from front
-    ASSERT_EQUAL(list.front(), 1); 
+    ASSERT_EQUAL(list3.front(), 1); 
 }
 
 

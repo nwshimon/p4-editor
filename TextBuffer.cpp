@@ -314,20 +314,40 @@ std::string TextBuffer::stringify() const {
 int TextBuffer::compute_column() const {
   Iterator copy = cursor;
   int counter = 0;
-  // if the cursor is past the end, then find the column
-    // of the last element in the row
-  if (cursor == data.end()) {
-    copy--;
+  if (cursor == data.begin()) {
+    return counter;
+  }
+
+
+  // moves copy to the element before cursor
+  copy--;
+  // // if the cursor is past the end, then find the column
+  //   // of the last element in the row
+  // if (cursor == data.end()) {
+  //   counter++;
+  // }
+  // // if cursor is at the end of the row - still need to compute column
+  // // even if on newline
+  //   // makes it so the main while loop below can still execute
+  //   // '\n' condition would not let code enter while loop
+
+  // // accounts for when the only element in the row is a newline
+  // else if (*cursor == '\n') {
+  //   if (*copy == '\n') { }
+  //   else {
+  //     counter++;
+  //   }
+  // }
+
+  if (*cursor == '\n' && *copy == '\n') {  }
+  else {
     counter++;
   }
-  // if cursor is at the end of the row - still need to compute column
-  // even if on newline
-    // makes it so the main while loop below can still execute
-    // '\n' condition would not let code enter while loop
-  else if (*cursor == '\n') {
-    copy--;
-    counter++;
-  }
+
+  // // in every other case: increases counter as well
+  // else {
+  //   counter++;
+  // }
   while (*copy != '\n' && copy != data.begin() && (*--copy != '\n')) {
     counter++;
   }
