@@ -25,38 +25,42 @@ bool TextBuffer::forward() {
     // increment col and index, keep same row
   column++;
   index++;
-  //  // if datum of cursor is new line char
-  // if (data_at_cursor() == '\n') {
-  //   // reset col to first col
-  //   column = 0;
-  //   // also increment row
-  //   row++;
-  // }
-  // cursor++;
-
   // if datum of cursor is new line char
-  // ACTUALLY: trying to check if data at cursor is RIGHT AFTER NEWLINE
-    // AFTER we've already moved cursor forward
   if (data_at_cursor() == '\n') {
+    // reset col to first col
+    column = 0;
+    // also increment row
     row++;
-    // accounts for when the cursor is at newline,
-      // but doesn't have a next node
-      // shouldn't update row, column should already be at end
-    // cursor is moved forward within this if statement
-    if (++cursor != data.end()) {
-      column = 0;
-    }
-    // accounts for when the cursor is at newline
-      // and has a next node
-    else {
-      // reset col to first col
-      column = 0;
-      // also increment row
-    }
   }
-  else {
-    ++cursor;
-  }
+  cursor++;
+
+  // where the fuck is the cursor supposed to land when you put a newline
+    // is it meant to be at the next row and col = 0?
+    // but col = 0 makes it so that the next incrementation eg for forward()
+    // puts the node that would be at col = 0 as col = 1
+      // is this maybe a problem with how we're assigning new nodes?
+
+  // // if datum of cursor is new line char
+  // // ACTUALLY: trying to check if data at cursor is RIGHT AFTER NEWLINE
+  //   // AFTER we've already moved cursor forward
+  // if (data_at_cursor() == '\n') {
+  //   // accounts for when the cursor is at newline,
+  //     // but doesn't have a next node
+  //     // shouldn't update row, column should already be at end
+  //   // cursor is moved forward within this if statement
+  //   if (++cursor == data.end()) { }
+  //   // accounts for when the cursor is at newline
+  //     // and has a next node
+  //   else {
+  //     // reset col to first col
+  //     column = 0;
+  //     // also increment row
+  //     row++;
+  //   }
+  // }
+  // else {
+  //   ++cursor;
+  // }
   return true;
     // so when Hello|\n --> should land on Hello\n|
     // when Hello\n| --> go to next row
@@ -324,8 +328,7 @@ int TextBuffer::compute_column() const {
     copy--;
     counter++;
   }
-  while (*copy != '\n' && copy != data.begin()) {
-    copy--;
+  while (*copy != '\n' && copy != data.begin() && (*--copy != '\n')) {
     counter++;
   }
   return counter;

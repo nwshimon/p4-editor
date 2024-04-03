@@ -44,4 +44,19 @@ TEST(textbuffer_insert_newline) {
   ASSERT_EQUAL(buffer.get_column(), 0);
 }
 
+TEST(textbuffer_insert_a_bunch_of_newlines) {
+  TextBuffer buffer;
+  buffer.insert('h');
+  buffer.insert('e');
+  buffer.insert('l');
+  buffer.insert('l');
+  buffer.insert('o');
+  buffer.insert('\n');
+  buffer.insert('i');
+  buffer.insert('a');
+  buffer.insert('\n');
+  buffer.backward();
+  
+}
+
 TEST_MAIN()

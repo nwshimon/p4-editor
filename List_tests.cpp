@@ -29,56 +29,49 @@ TEST(test_traversal) {
 // LIST TESTS —————————————————
 // EMPTY TESTS
 // case where list initially empty and elements are added from back
-TEST(check_empty1) { 
-    // empty list
+TEST(check_empty) { 
+// case where list is not empty
     List<int> list;
     // add 1,2,3,4 into list
     for (int i = 0; i < 5; ++i) {
         list.push_back(i);
     }
     ASSERT_FALSE(list.empty());
-}
 
 // case where list = empty
-TEST(check_empty2) { 
-    // empty list
-    List<int> list;
-    ASSERT_TRUE(list.empty());
-}
+        // empty list
+    List<int> list2;
+    ASSERT_TRUE(list2.empty());
 
-// case where elements all are deleted from back
-TEST(check_empty3) { 
-    // empty list
-    List<int> list;
+// case where list is filled and then popped from back
+    List<int> list3;
     // add 0,1,2,3,4 into list
     for (int i = 0; i < 5; ++i) {
-        list.push_back(i);
+        list3.push_back(i);
     }
     // delete 0,1,2,3,4 from list
     for (int i = 0; i < 5; ++i) {
-        list.pop_back();
+        list3.pop_back();
     }
-    ASSERT_TRUE(list.empty());
-}
+    ASSERT_TRUE(list3.empty());
 
 // case where elements all are deleted from front
-TEST(check_empty4) { 
     // empty list
-    List<int> list;
+    List<int> list4;
     // add 0,1,2,3,4 into list
     for (int i = 0; i < 5; ++i) {
-        list.push_back(i);
+        list4.push_back(i);
     }
     // delete 0,1,2,3,4 from list
     for (int i = 0; i < 5; ++i) {
-        list.pop_front();
+        list4.pop_front();
     }
     ASSERT_TRUE(list.empty());
 }
 
-
 // SIZE TESTS
-TEST(check_size1) { // simple case
+TEST(check_size) { // simple case
+// list is filled from back
     // empty list
     List<int> list;
     // add 0,1,2,3,4 into list
@@ -86,48 +79,43 @@ TEST(check_size1) { // simple case
         list.push_back(i);
     }
     ASSERT_EQUAL(list.size(), 5);
-}
 
-TEST(check_size2) { // case where elements all are deleted from front
-    // empty list
-    List<int> list;
+// list is filled from back then popped from front
+    List<int> list2;
     // add 1,2,3,4 into list
     for (int i = 0; i < 5; ++i) {
-        list.push_back(i);
+        list2.push_back(i);
     }
     // delete 1,2,3,4 from list
     for (int i = 0; i < 5; ++i) {
-        list.pop_front(); 
+        list2.pop_front(); 
     }
-    ASSERT_TRUE(list.size() == 0);
-}
+    ASSERT_TRUE(list2.size() == 0);
 
-TEST(check_size3) { // progressive check as nodes added 
-    // empty list
-    List<int> list;
+// progressive check as nodes added 
+    List<int> list3;
     // add 0,1,2,3,4 into list
     for (int i = 0; i < 5; ++i) {
-        list.push_back(i);
-        ASSERT_EQUAL(list.size(), i + 1);
+        list3.push_back(i);
+        ASSERT_EQUAL(list3.size(), i + 1);
     }
-}
 
-TEST(check_size4) { // progressive check as nodes deleted 
-    // empty list
-    List<int> list;
+// progressive check as nodes deleted 
+    List<int> list4;
     // add 0,1,2,3,4 into list
     for (int i = 0; i < 5; ++i) {
-        list.push_back(i);
+        list4.push_back(i);
     }
     // delete 0,1,2,3,4 from list
     for (int i = 0; i < 5; ++i) {
-        list.pop_front();
-        ASSERT_EQUAL(list.size(), 4 - i);
+        list4.pop_front();
+        ASSERT_EQUAL(list4.size(), 4 - i);
     }
 }
 
 // TEST FRONT
-TEST(check_front1) { // simple int list case - pushfront 5x
+TEST(check_front1) { 
+// simple int list case - pushfront 5x
     // empty list
     List<int> list;
     // add 0,1,2,3,4 into list
@@ -135,53 +123,49 @@ TEST(check_front1) { // simple int list case - pushfront 5x
         list.push_back(i);
     }
     ASSERT_TRUE(list.front() == 0);
-}
 
-TEST(check_front2) { // simple char list case - pushfront 1x
+ // simple char list case - pushfront 1x
     // empty list
-    List<int> list;
+    List<int> list2;
     list.push_back(11);
-    ASSERT_EQUAL(list.front(), 11);
-    ASSERT_EQUAL(list.back(), 11);
-    ASSERT_EQUAL(list.size(), 1);
-}
-
-TEST(check_front3) { // check pop front ending w/ non-empty list
+    ASSERT_EQUAL(list2.front(), 11);
+    ASSERT_EQUAL(list2.back(), 11);
+    ASSERT_EQUAL(list2.size(), 1);
+// check pop front ending w/ non-empty list
     // empty list
-    List<int> list;
+    List<int> list3;
     // add 4,3,2,1,0 into list
     for (int i = 0; i < 5; ++i) {
-        list.push_front(i);
+        list3.push_front(i);
     }
     // delete 4,3,2 from list
     for (int i = 0; i < 3; ++i) {
-        list.pop_front();
+        list3.pop_front();
     }
-    ASSERT_EQUAL(list.front(), 1);
-    ASSERT_EQUAL(list.size(), 2);
-}
-
-TEST(check_front4) { // progressive check case with push front
+    ASSERT_EQUAL(list3.front(), 1);
+    ASSERT_EQUAL(list3.size(), 2);
+// progressive check case with push front
     // empty list
-    List<int> list;
+    List<int> list4;
     // add 0,1,2,3,4 into list
     for (char i = 0; i < 5; ++i) {
-        list.push_back(i);
+        list4.push_back(i);
     }
     // delete 0,1,2,3,4 from list
     for (char i = 0; i > 5; --i) {
-        list.pop_front();
+        list4.pop_front();
         if (i != 5) {
-            ASSERT_EQUAL(list.front(), i + 1);
+            ASSERT_EQUAL(list4.front(), i + 1);
         }
         else {
-            ASSERT_TRUE(list.empty());
+            ASSERT_TRUE(list4.empty());
         }
     }
 }
 
 // TEST BACK
-TEST(check_back1) { // simple int list case
+TEST(check_back) {
+    // simple int list case
     // empty list
     List<int> list;
     // add 0,1,2,3,4 into list
@@ -190,38 +174,24 @@ TEST(check_back1) { // simple int list case
     }
 
     ASSERT_TRUE(list.back() == 4);
-}
-
-TEST(check_back2) { // simple char list case
+// progressive check case with pop front
     // empty list
-    List<int> list;
-    // add 0,1,2,3,4 into list
-    for (int i = 0; i < 5; ++i) {
-        list.push_back(i);
-    }
-    ASSERT_TRUE(list.back() == 4);
-}
-
-TEST(check_back3) { // progressive check case with pop front
-    // empty list
-    List<int> list;
+    List<int> list2;
     // add 0,1,2,3,4 into list
     for (int i = 1; i < 5; ++i) {
-        list.push_back(i);
+        list2.push_back(i);
     }
     // delete 0,1,2,3,4 from list
     for (char i = 0; i > 5; --i) {
-        list.pop_back();
+        list2.pop_back();
         if (i != 5) {
-            ASSERT_EQUAL(list.back(), 5 - i);
+            ASSERT_EQUAL(list2.back(), 5 - i);
         }
         else {
-            ASSERT_TRUE(list.empty());
+            ASSERT_TRUE(list2.empty());
         }
     }
-}
-
-TEST(check_back4) { // progressive check case with push front
+    // progressive check case with push front
     // empty list
     List<int> list;
     // add 0,1,2,3,4 into list
@@ -229,77 +199,69 @@ TEST(check_back4) { // progressive check case with push front
         list.push_back(i);
         ASSERT_EQUAL(list.back(), i);
     }  
-}  
+}
 
 // TEST PUSH FRONT
-    // push front 1x - checks insertion into empty list
-TEST(check_pushf1) {
+TEST(check_pushf) {
+// push front 1x - checks insertion into empty list
     List<int> list;
     list.push_front(6);
     ASSERT_EQUAL(list.front(), 6);
     ASSERT_EQUAL(list.back(), 6);
-}
 
-    // push front 2x - checks if actually adds element from front
-TEST(check_pushf2) {
-    List<int> list;
-    list.push_front(3);
-    list.push_front(2);
-    ASSERT_EQUAL(list.front(), 2);
-}
+// push front 2x - checks if actually adds element from front
+    List<int> list2;
+    list2.push_front(3);
+    list2.push_front(2);
+    ASSERT_EQUAL(list2.front(), 2);
 
-    // push front 5x - progressive check case for front
-TEST(check_pushf3) {
+// push front 5x - progressive check case for front
     // empty list
-    List<int> list;
+    List<int> list3;
     // add 4,3,2,1,0 into list
     for (char i = 0; i < 5; ++i) {
-        list.push_front(i);
+        list3.push_front(i);
     }
     // delete 4,3,2,1,0 from list
     for (char i = 0; i > 5; --i) {
-        list.pop_front();
+        list3.pop_front();
         int subtractor = i+1;
         if (i != 5) {
-            ASSERT_EQUAL(list.front(), 5-subtractor);
+            ASSERT_EQUAL(list3.front(), 5-subtractor);
         }
         else {
-            ASSERT_TRUE(list.empty());
+            ASSERT_TRUE(list3.empty());
         }
     }
-}
-
-TEST(check_pushf4) { // simple push front check
+// simple push front check
     // empty list
-    List<int> list;
+    List<int> list4;
     // add 0,1,2,3,4 into list
     for (int i = 0; i < 5; ++i) {
-        list.push_front(i);
+        list4.push_front(i);
     }
-    ASSERT_TRUE(!list.empty());
-}
+    ASSERT_TRUE(!list4.empty());
 
-TEST(check_pushf5) { // simple push front datum check
+// simple push front datum check
     // empty list
-    List<int> list;
+    List<int> list5;
     // add 0,1,2,3,4 into list so it's {4,3,2,1,0}
     for (int i = 0; i < 5; ++i) {
-        list.push_front(i);
+        list5.push_front(i);
     }
-    ASSERT_TRUE(list.front() == 4);
+    ASSERT_TRUE(list5.front() == 4);
 }
 
 // TEST POP FRONT
-TEST(check_pop_front1) { // simple case with one node deleted
+TEST(check_pop_front) { 
+// simple case with one node deleted
     List<int> list;
     // 1 is in list
     list.push_back(1);
     ASSERT_EQUAL(list.size(), 1);
     list.pop_front(); 
     ASSERT_TRUE(list.empty());
-}
-
-TEST(check_pop_front2) { // simple case with all nodes deleted
+// simple case with all nodes deleted
     List<int> list;
     // adds 0,1,2,3,4
     for (int i = 0; i < 5; ++i) {
@@ -310,10 +272,7 @@ TEST(check_pop_front2) { // simple case with all nodes deleted
         list.pop_front();
     }
     ASSERT_EQUAL(list.size(), 0); 
-}
-
 // checks that first node specifically is deleted
-TEST(check_pop_front3) { 
     List<int> list;
     // adds 0,1,2,3,4
     for (int i = 0; i < 5; ++i) {
@@ -328,43 +287,41 @@ TEST(check_pop_front3) {
     ASSERT_EQUAL(list.front(), 1); 
 }
 
-TEST(check_pop_back1) {
+
+TEST(check_pop_back) {
     List<int> list;
     // fills in the list with 0,1, 2, 3, 4
     list.push_back(1);
     ASSERT_EQUAL(list.size(), 1);
     list.pop_back(); 
     ASSERT_TRUE(list.empty());
-}
 
-TEST(check_pop_back2) {
-    List<char> list;
+    List<char> list2;
     // adds 0,1,2,3,4 to list
     for (char i = 0; i < 5; ++i) {
-        list.push_back(i);
+        list2.push_back(i);
     }
     // pops back elements 4 thru 1
     for (int i = 0; i < 5; ++i) {
-        list.pop_back();
+        list2.pop_back();
     }
-    ASSERT_TRUE(list.size()== 0);
-}
-
-TEST(check_pop_back3) { // checks that first node specifically is deleted
-    List<int> list;
+    ASSERT_TRUE(list2.size()== 0);
+// checks that first node specifically is deleted
+    List<int> list3;
     // adds 0,1,2,3,4
     for (int i = 0; i < 5; ++i) {
-        list.push_back(i); 
+        list3.push_back(i); 
     } 
     // pops back element '4'
-    list.pop_back(); 
+    list3.pop_back(); 
     // new first->datum should be 3 bc 4 was 'popped' from back
-    ASSERT_EQUAL(list.back(), 3); 
+    ASSERT_EQUAL(list3.back(), 3); 
+
 }
 
 // TEST CLEAR
-    // clearing on a multiple-node list
-TEST(check_clear1) {
+TEST(check_clear) {
+// clearing on a multiple-node list
     List<int> list;
     for (int i = 0; i < 5; i++) {
         list.push_back(i);
@@ -372,15 +329,13 @@ TEST(check_clear1) {
     list.clear();
     ASSERT_TRUE(list.empty());
     ASSERT_EQUAL(list.size(), 0);
-}
 
-    // clearing on 1 node list
-TEST(check_clear2) {
-    List<int> list;
-    list.push_front(7);
-    list.clear();
-    ASSERT_TRUE(list.empty());
-    ASSERT_EQUAL(list.size(), 0);
+// clearing on 1 node list
+    List<int> list2;
+    list2.push_front(7);
+    list2.clear();
+    ASSERT_TRUE(list2.empty());
+    ASSERT_EQUAL(list2.size(), 0);
 }
 
 // LIST BIG THREE TESTS ——————————————————————
