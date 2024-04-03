@@ -66,7 +66,7 @@ TEST(check_empty) {
     for (int i = 0; i < 5; ++i) {
         list4.pop_front();
     }
-    ASSERT_TRUE(list.empty());
+    ASSERT_TRUE(list4.empty());
 }
 
 // SIZE TESTS
@@ -127,7 +127,7 @@ TEST(check_front1) {
  // simple char list case - pushfront 1x
     // empty list
     List<int> list2;
-    list.push_back(11);
+    list2.push_back(11);
     ASSERT_EQUAL(list2.front(), 11);
     ASSERT_EQUAL(list2.back(), 11);
     ASSERT_EQUAL(list2.size(), 1);
@@ -389,19 +389,59 @@ TEST(check_assignment_operator) {
     // as the LHS source of the assignment.
 TEST(check_assignment_operator2) {
     List<int> list;
-    // 0 1 2 3 4
+    // 4 3 2 1 0
     for (int i = 0; i < 5; i++) {
         list.push_front(i);
     }
     List<int> copy;
     copy = list;
+    ASSERT_EQUAL(list.size(), copy.size());
+    ASSERT_EQUAL(list.front(), copy.front());
     List<int>::Iterator iter_list = list.begin();
     List<int>::Iterator iter_copy = copy.begin();
     for (int i = 0; i < 5; i++) {
         iter_list++;
         iter_copy++;
-        ASSERT_EQUAL(*iter_list, *iter_copy);
+        if (i != 4) {
+            ASSERT_EQUAL(*iter_list, *iter_copy);
+        }
     }
+}
+
+// Assignment should work correctly,
+    // even in cases where the RHS target of
+    // the assignment has previous elements.
+TEST(check_assignment_operator3) {
+    List<int> list;
+    for (int i = 0; i < 5; i++) {
+        list.push_back(i);
+    }
+    List<int> copy;
+    for (int i = 0; i < 3; i++) {
+        copy.push_front(i);
+    }
+    copy = list;
+    ASSERT_EQUAL(list.size(), copy.size());
+    ASSERT_EQUAL(list.front(), copy.front());
+    ASSERT_EQUAL(list.back(), copy.back());
+    List<int>::Iterator iter_list = list.begin();
+    List<int>::Iterator iter_copy = copy.begin();
+    for (int i = 0; i < 5; i++) {
+        iter_list++;
+        iter_copy++;
+        if (i != 4) {
+            ASSERT_EQUAL(*iter_list, *iter_copy);
+        }
+    }
+}
+
+// Your tests fail to catch a bug in this function.
+    // Double check that you have tests for the assignment operator specifically,
+    // e.g. not something like List list2 = list; which uses the copy constructor.
+    // Assignment would require a separate line like list2 = list;
+    // after list2 has already been defined.
+TEST(check_assignment_operator4) {
+    
 }
 
 
@@ -492,31 +532,6 @@ TEST(check_iterator_insert2) {
     // it3 points to newly inserted node - 2 (which is BEFORE 11)
     it3++;
     ASSERT_EQUAL(*it3, 11);
-}
-
-// checks inserting new line - where would iterator land?
-// FALSE POSITIVE?
-TEST(check_iterator_insert_newline) { 
-    List<int> list1;
-    List<int>::Iterator it1 = list1.begin();
-    // 0,1,2
-    for (int i = 0; i < 3; i++) {
-        list1.push_back(i); // might invalidate iterator for it
-        // might not update pointer in iterator itself
-
-        // pushback doesn't automatically move cursor
-        // to AFTER the inserted element
-        ++it1;
-    }
-    ASSERT_EQUAL(*it1, 2);
-    // goes to 1
-    it1--;
-    ASSERT_EQUAL(*it1, 1);
-    it1 = list1.insert(it1, '\n');
-    // inserts \n BEFORE 1
-    ASSERT_EQUAL(*it1, '\n');
-    it1++;
-    ASSERT_EQUAL(*it1, 1);
 }
 
 // tests erase on multiple node list

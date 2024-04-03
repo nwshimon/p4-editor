@@ -34,33 +34,6 @@ bool TextBuffer::forward() {
   }
   cursor++;
 
-  // where the fuck is the cursor supposed to land when you put a newline
-    // is it meant to be at the next row and col = 0?
-    // but col = 0 makes it so that the next incrementation eg for forward()
-    // puts the node that would be at col = 0 as col = 1
-      // is this maybe a problem with how we're assigning new nodes?
-
-  // // if datum of cursor is new line char
-  // // ACTUALLY: trying to check if data at cursor is RIGHT AFTER NEWLINE
-  //   // AFTER we've already moved cursor forward
-  // if (data_at_cursor() == '\n') {
-  //   // accounts for when the cursor is at newline,
-  //     // but doesn't have a next node
-  //     // shouldn't update row, column should already be at end
-  //   // cursor is moved forward within this if statement
-  //   if (++cursor == data.end()) { }
-  //   // accounts for when the cursor is at newline
-  //     // and has a next node
-  //   else {
-  //     // reset col to first col
-  //     column = 0;
-  //     // also increment row
-  //     row++;
-  //   }
-  // }
-  // else {
-  //   ++cursor;
-  // }
   return true;
     // so when Hello|\n --> should land on Hello\n|
     // when Hello\n| --> go to next row
@@ -259,21 +232,23 @@ bool TextBuffer::down() {
   }
 // TO CHECK IF AT LAST ROW:
   // while not at newline, keep moving forward
-  while (data_at_cursor() != '\n') {
+
+  // data at cursor would be trying to access an end iterator during while loop
+  while (cursor != data.end() && data_at_cursor() != '\n') {
     // moves cursor forward
     forward();
-    if (cursor == data.end()) { // if cursor hits end, then return false
-      move_to_row_end();
-      return false;
-      }
     // otherwise: once newline is encountered, break out of the while loop
   }
+  // // if cursor exits the while loop because it's an end iterator: move to row end
+  // if (cursor == data.end()) {
+  //   move_to_row_end();
+  // }
   while (row != target_row) {
     forward();
     // row increments in forward()
   }
   if (forward()) {
-    while (column != copy_col && cursor != data.end()
+    while (cursor != data.end() && column != copy_col
            && data_at_cursor() != '\n') {
       forward();
     }
@@ -318,37 +293,15 @@ int TextBuffer::compute_column() const {
     return counter;
   }
 
-
   // moves copy to the element before cursor
-  copy--;
-  // // if the cursor is past the end, then find the column
-  //   // of the last element in the row
-  // if (cursor == data.end()) {
-  //   counter++;
-  // }
-  // // if cursor is at the end of the row - still need to compute column
-  // // even if on newline
-  //   // makes it so the main while loop below can still execute
-  //   // '\n' condition would not let code enter while loop
-
-  // // accounts for when the only element in the row is a newline
-  // else if (*cursor == '\n') {
-  //   if (*copy == '\n') { }
-  //   else {
-  //     counter++;
-  //   }
-  // }
+  --copy;
 
   if (*cursor == '\n' && *copy == '\n') {  }
   else {
     counter++;
   }
 
-  // // in every other case: increases counter as well
-  // else {
-  //   counter++;
-  // }
-  while (*copy != '\n' && copy != data.begin() && (*--copy != '\n')) {
+  while (copy != data.begin() && *copy != '\n' && (*--copy != '\n')) {
     counter++;
   }
   return counter;
