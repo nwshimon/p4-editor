@@ -24,6 +24,7 @@ TEST(test_traversal) {
     ASSERT_EQUAL(j, list.size());
 }
 
+
 // our tests
 
 // LIST TESTS —————————————————
@@ -69,6 +70,7 @@ TEST(check_empty) {
     ASSERT_TRUE(list4.empty());
 }
 
+
 // SIZE TESTS
 TEST(check_size) { // simple case
 // list is filled from back
@@ -112,6 +114,7 @@ TEST(check_size) { // simple case
         ASSERT_EQUAL(list4.size(), 4 - i);
     }
 }
+
 
 // TEST FRONT
 TEST(check_front1) { 
@@ -163,6 +166,7 @@ TEST(check_front1) {
     }
 }
 
+
 // TEST BACK
 TEST(check_back) {
     // simple int list case
@@ -200,6 +204,7 @@ TEST(check_back) {
         ASSERT_EQUAL(list3.back(), i);
     }  
 }
+
 
 // TEST PUSH FRONT
 TEST(check_pushf) {
@@ -251,6 +256,7 @@ TEST(check_pushf) {
     }
     ASSERT_TRUE(list5.front() == 4);
 }
+
 
 // TEST POP FRONT
 TEST(check_pop_front) { 
@@ -319,6 +325,7 @@ TEST(check_pop_back) {
 
 }
 
+
 // TEST CLEAR
 TEST(check_clear) {
 // clearing on a multiple-node list
@@ -338,6 +345,7 @@ TEST(check_clear) {
     ASSERT_EQUAL(list2.size(), 0);
 }
 
+
 // LIST BIG THREE TESTS ——————————————————————
 TEST(check_default_ctor) {
     List<int> list;
@@ -345,6 +353,7 @@ TEST(check_default_ctor) {
     ASSERT_EQUAL(list.size(), 0);
     list.clear();
 }
+
 
 //  Your tests fail to catch a bug in this function.
     // Double check that you have tests for the assignment
@@ -384,6 +393,7 @@ TEST(check_assignment_operator) {
     copy.clear();
 }
 
+
 //Ensure your tests verify the assignment operator works correctly,
     // such that the RHS target of the assignment now contains the same elements
     // as the LHS source of the assignment.
@@ -409,6 +419,7 @@ TEST(check_assignment_operator2) {
     list.clear();
     copy.clear();
 }
+
 
 // Assignment should work correctly,
     // even in cases where the RHS target of
@@ -439,6 +450,7 @@ TEST(check_assignment_operator3) {
     copy.clear();
 }
 
+
 // Assign an empty list to a copy
 TEST(check_assignment_operator4) {
     List<int> list;
@@ -455,6 +467,7 @@ TEST(check_assignment_operator4) {
     list.clear();
     copy.clear();
 }
+
 
 TEST(check_self_assignment) {
     List<int> list;
@@ -476,6 +489,7 @@ TEST(check_self_assignment) {
     list.clear();
 }
 
+
 // Your tests fail to catch a bug in this function.
     // Double check that you have tests for the assignment operator specifically,
     // e.g. not something like List list2 = list; which uses the copy constructor.
@@ -496,6 +510,7 @@ TEST(check_copy_ctor2) {
     ASSERT_EQUAL(list.front(), copy_ctor.front());
     ASSERT_EQUAL(list.back(), copy_ctor.back());
 }
+
 
 TEST(check_assignment_operator6) {
     List<int> list;
@@ -525,6 +540,7 @@ TEST(check_copy_ctor) {
     list.clear();
 }
 
+
 // TEST ITERATOR ————————————————————————————
 // TEST BEGIN & END
     // checks iterator begin & end on a 1-node list
@@ -539,6 +555,7 @@ TEST(check_iterator_begin_end1) {
     // // it2 should be past the end
     // ASSERT_EQUAL(it2, nullptr);
 }
+
 
     // checks iterator on multiple node list w/ mix of pushf & pushb
     // checks if iterator is past the end
@@ -578,6 +595,7 @@ TEST(check_iterator_defctor) {
     list.clear();
 }
 
+
 // TEST ITERATOR INSERT
 // checks inserting into an empty list
 TEST(check_iterator_insert1) { 
@@ -601,6 +619,7 @@ TEST(check_iterator_insert2) {
     it3++;
     ASSERT_EQUAL(*it3, 11);
 }
+
 
 // tests erase on multiple node list
 TEST(check_erase1) {
@@ -627,6 +646,7 @@ TEST(check_erase1) {
     ASSERT_EQUAL(list1.front(), 1);
 }
 
+
 // checks what it means to "invalidate iterator"
 TEST(check_erase2) {
     List<int> list;
@@ -639,6 +659,7 @@ TEST(check_erase2) {
     // middle SHOULD be invalidated here
     ASSERT_EQUAL(*new_iter, 3);
 }
+
 
 // erases elements from multiple node list
 TEST(check_erase3) {
@@ -681,6 +702,7 @@ TEST(check_erase3) {
     ASSERT_TRUE(list.empty());
 }
 
+
 // OVERLOADED OPERATOR TESTS ——————————————
 TEST(check_pointer_star) {
     List<int> list;
@@ -695,6 +717,7 @@ TEST(check_pointer_star) {
     }
     ASSERT_EQUAL(*it, 4);
 }
+
 
 TEST(check_incrementation_prefix) { 
     List<int> list;
@@ -711,6 +734,7 @@ TEST(check_incrementation_prefix) {
     ASSERT_TRUE(*it == 3);
 }
 
+
 TEST(check_incrementation_postfix) { 
     List<int> list;
     // fills in the list with 0, 1, 2, 3, 4
@@ -722,6 +746,7 @@ TEST(check_incrementation_postfix) {
     ASSERT_EQUAL(result, 0);
     ASSERT_EQUAL(*it, 1);
 }
+
 
 TEST(check_decrementation_prefix) { 
     List<int> list;
@@ -739,6 +764,7 @@ TEST(check_decrementation_prefix) {
     ASSERT_TRUE(*it == 1);
 }
 
+
 TEST(check_decrementation_postfix) { 
     List<int> list;
     // fills in the list with 0, 1, 2, 3, 4
@@ -754,6 +780,7 @@ TEST(check_decrementation_postfix) {
     ASSERT_EQUAL(result, 1);
     ASSERT_EQUAL(*it, 0);
 }
+
 
     // for when it1 and it2 
 TEST(check_bool_equal_and_unequal) { 
@@ -793,6 +820,7 @@ TEST(check_bool_equal_and_unequal) {
 
     list.clear();
 }
+
 
 // for iterator pointing to list that only has 1 node
 TEST(check_bool_equal) {

@@ -1,7 +1,7 @@
 #include <cassert>
 #include "TextBuffer.hpp"
 
-//FIX SYNTAX
+
 //EFFECTS: Creates an empty text buffer. Its cursor is at the past-the-end
   //         position, with row 1, column 0, and index 0.
 TextBuffer::TextBuffer() : row(1), column(0), index(0) {
@@ -9,6 +9,7 @@ TextBuffer::TextBuffer() : row(1), column(0), index(0) {
     // "past end" cursor"
   cursor = data.end();
 }
+
 
 //MODIFIES: *this
   //EFFECTS:  Moves the cursor one position forward and returns true,
@@ -33,11 +34,11 @@ bool TextBuffer::forward() {
     row++;
   }
   cursor++;
-
   return true;
     // so when Hello|\n --> should land on Hello\n|
     // when Hello\n| --> go to next row
 } // is at end closes
+
 
 //MODIFIES: *this
   //EFFECTS:  Moves the cursor one position backward and returns true,
@@ -56,18 +57,17 @@ bool TextBuffer::backward() {
   // backward cursor position by one 
   cursor--;
   column--;
-
   // if at begining of a line and you go backwards,
     // you end up with a negative column
   if (column < 0) {
     row--;
     column = compute_column();
   }
-  
     // if datum is not new line, increment col and index
   index--;
   return true;
 }
+
 
 // row and col changes for this one
 void TextBuffer::insert(char c) {
@@ -86,11 +86,12 @@ bool TextBuffer::remove() {
   return true;
 }
 
+
   //MODIFIES: *this
   //EFFECTS:  Moves the cursor to the start of the current row (column 0).
   //NOTE:     Your implementation must update the row, column, and index
   //          if appropriate to maintain all invariants.
-void TextBuffer::move_to_row_start() {
+void TextBuffer::move_to_row_start() { 
   // cursor will never land on newline b/c 
     // already accounted for by other functions
     // this is assuming we've kept the cursor iterator invariant
@@ -98,13 +99,11 @@ void TextBuffer::move_to_row_start() {
   if (column == 0 && cursor == data.begin()) { // we're alr at row start
     return;
   }
-
   // check if not at the end iterator then decrement first
   // BEFORE entering while loop
   if (is_at_end()) {
     backward();
   }
-
   // while not new line (bc it would go up a row)
     // so we'd alr be at start of row
   // and not start of list 
@@ -115,7 +114,7 @@ void TextBuffer::move_to_row_start() {
   }
 }
 
-// use compute column?
+
 // is move to row end meant to be the newline character
   // or the last actual character?
 void TextBuffer::move_to_row_end() {
@@ -123,13 +122,13 @@ void TextBuffer::move_to_row_end() {
   if (is_at_end() || data_at_cursor() == '\n') {
     return;
   }
-
   // moving the cursor forward until it hits newline or end of data
   // !! evaluated from left to right - order matters in if statements
   while (!is_at_end() && data_at_cursor() != '\n') {
     forward();
   }
 }
+
 
   //REQUIRES: new_column >= 0
   //MODIFIES: *this
@@ -148,7 +147,6 @@ void TextBuffer::move_to_column(int new_column) {
   else if (new_column < column) {
     backward();
   }
-
   // SHOULD account for when new column is past the max col in the row
     // by iterating until the cursor has hit newline
     // or hit past the end
@@ -168,8 +166,9 @@ void TextBuffer::move_to_column(int new_column) {
       return;
     }
   }
-  // check if row, column, index are all kept within invariant here
+  // row, column, index are all kept within invariant here
 }
+
 
   //MODIFIES: *this
   //EFFECTS:  Moves the cursor to the previous row, retaining the
@@ -193,7 +192,6 @@ bool TextBuffer::up() {
     }
     // if there is an existing node before the newline on the row above
       // (which backward() returns in a bool)
-    
     // if the cursor arrives at a column that is less than the target column
       // after going backwards
     if (column < target_col) {
@@ -210,6 +208,7 @@ bool TextBuffer::up() {
   }
   return false;
 }
+
 
   //MODIFIES: *this
   //EFFECTS:  Moves the cursor to the next row, retaining the current
@@ -245,10 +244,10 @@ bool TextBuffer::down() {
   if (is_at_end()) {
     move_to_row_end();
   }
-
+  // while not at last node and row isnt target row
   while (!is_at_end() && row != target_row) {
     forward();
-    // row increments in forward()
+    // note: row increments in forward()
   }
   if (forward()) {
     while (!is_at_end() && column != copy_col
@@ -259,33 +258,41 @@ bool TextBuffer::down() {
   return true;
 }
 
+
 bool TextBuffer::is_at_end() const {
  return (cursor == data.end());
 }
+
 
 char TextBuffer::data_at_cursor() const {
   return *cursor;
 }
 
+
 int TextBuffer::get_row() const {
   return row;
 }
+
 
 int TextBuffer::get_column() const {
   return column;
 }
 
+
 int TextBuffer::get_index() const {
   return index;
 }
+
 
 int TextBuffer::size() const {
   return data.size();
 }
 
+
 std::string TextBuffer::stringify() const {
   return std::string(data.begin(), data.end());
 }
+
 
   // compute the column when moving left from the
   //          beginning of a line to the end of the previous one.
@@ -295,24 +302,18 @@ int TextBuffer::compute_column() const {
   if (cursor == data.begin()) {
     return counter;
   }
-
   // moves copy to the element before cursor
   --copy;
 
   if (*cursor == '\n' && *copy == '\n') {  }
+  // if datum from node at cursor and cursor copy are both != \n 
   else {
     counter++;
   }
-
+  // while the copy is not at first node adress and its datum isnt \name
+    // and the datum of node before one pointed to by copy isnt \n
   while (copy != data.begin() && *copy != '\n' && (*--copy != '\n')) {
     counter++;
   }
   return counter;
 }
-// need to move cursor back until hitting smth
-// make a copy cursor
-
-// postfix vs prefix: if trying to dereference directly on the --it or it-- line
-
-
-// forward backward compute_column
