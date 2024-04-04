@@ -101,7 +101,7 @@ void TextBuffer::move_to_row_start() {
 
   // check if not at the end iterator then decrement first
   // BEFORE entering while loop
-  if (cursor != data.end()) {
+  if (is_at_end()) {
     backward();
   }
 
@@ -109,8 +109,8 @@ void TextBuffer::move_to_row_start() {
     // so we'd alr be at start of row
   // and not start of list 
     // bc we'd alr be at start of first row (where there's no \n before)
-  while (column != 0 && data_at_cursor() != '\n'
-         && cursor != data.begin()) {
+  while (column != 0 && !is_at_end()
+        && data_at_cursor() != '\n') {
     backward(); // go backward once -alr accounts for index decrement
   }
 }
@@ -120,13 +120,13 @@ void TextBuffer::move_to_row_start() {
   // or the last actual character?
 void TextBuffer::move_to_row_end() {
   // for when the cursor is already at newline character
-  if (cursor == data.end() || data_at_cursor() == '\n') {
+  if (is_at_end() || data_at_cursor() == '\n') {
     return;
   }
 
   // moving the cursor forward until it hits newline or end of data
   // !! evaluated from left to right - order matters in if statements
-  while (cursor != data.end() && data_at_cursor() != '\n') {
+  while (!is_at_end() && data_at_cursor() != '\n') {
     forward();
   }
 }
@@ -153,7 +153,7 @@ void TextBuffer::move_to_column(int new_column) {
     // by iterating until the cursor has hit newline
     // or hit past the end
   while (column != new_column && data_at_cursor() != '\n'
-         && cursor != data.end()) {
+         && !is_at_end()) {
     // for when the desired column is to the right of the current column
     if (new_column > column) {
       forward();
@@ -227,28 +227,31 @@ bool TextBuffer::down() {
   int target_row = row + 1;
   // checks if the cursor has been placed past the end yet
     // - if already at past the end, return false
-  if (cursor == data.end()) {
+  if (is_at_end()) {
     return false;
+  }
+  if (data_at_cursor() == '\n') {
+    backward();
   }
 // TO CHECK IF AT LAST ROW:
   // while not at newline, keep moving forward
-
   // data at cursor would be trying to access an end iterator during while loop
-  while (cursor != data.end() && data_at_cursor() != '\n') {
+  while (!is_at_end() && data_at_cursor() != '\n') {
     // moves cursor forward
     forward();
     // otherwise: once newline is encountered, break out of the while loop
   }
-  // // if cursor exits the while loop because it's an end iterator: move to row end
-  // if (cursor == data.end()) {
-  //   move_to_row_end();
-  // }
-  while (row != target_row) {
+  // if cursor exits the while loop because it's an end iterator: move to row end
+  if (is_at_end()) {
+    move_to_row_end();
+  }
+
+  while (!is_at_end() && row != target_row) {
     forward();
     // row increments in forward()
   }
   if (forward()) {
-    while (cursor != data.end() && column != copy_col
+    while (!is_at_end() && column != copy_col
            && data_at_cursor() != '\n') {
       forward();
     }

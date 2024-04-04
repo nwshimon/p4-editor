@@ -406,6 +406,8 @@ TEST(check_assignment_operator2) {
             ASSERT_EQUAL(*iter_list, *iter_copy);
         }
     }
+    list.clear();
+    copy.clear();
 }
 
 // Assignment should work correctly,
@@ -433,6 +435,45 @@ TEST(check_assignment_operator3) {
             ASSERT_EQUAL(*iter_list, *iter_copy);
         }
     }
+    list.clear();
+    copy.clear();
+}
+
+// Assign an empty list to a copy
+TEST(check_assignment_operator4) {
+    List<int> list;
+    List<int> copy;
+    copy.push_back(5);
+    copy.push_back(6);
+    copy.push_back(7);
+
+    copy = list;
+    // copy should contain an empty list
+    ASSERT_TRUE(copy.empty());
+    ASSERT_TRUE(list.empty());
+
+    list.clear();
+    copy.clear();
+}
+
+TEST(check_self_assignment) {
+    List<int> list;
+    list.push_back(1);
+    list.push_back(2);
+    list.push_back(3);
+
+    List<int> copy;
+    copy = list;
+
+    List<int> &copy2 = copy;
+    copy = copy2;
+    ASSERT_EQUAL(list.size(), copy2.size());
+    ASSERT_EQUAL(list.front(), copy2.front());
+    ASSERT_EQUAL(list.back(), copy2.back());
+
+    copy2.clear();
+    copy.clear();
+    list.clear();
 }
 
 // Your tests fail to catch a bug in this function.
@@ -440,8 +481,35 @@ TEST(check_assignment_operator3) {
     // e.g. not something like List list2 = list; which uses the copy constructor.
     // Assignment would require a separate line like list2 = list;
     // after list2 has already been defined.
-TEST(check_assignment_operator4) {
-    
+// Ensure you test the assignment operator on a variety of lists,
+    // including any relevant special cases.
+TEST(check_copy_ctor2) {
+    List<int> list;
+    for (int i = 0; i < 5; i++) {
+        list.push_back(i);
+    }
+    // use a copy constructor here
+    List<int> copy_ctor(list);
+
+    // test size
+    ASSERT_EQUAL(list.size(), copy_ctor.size());
+    ASSERT_EQUAL(list.front(), copy_ctor.front());
+    ASSERT_EQUAL(list.back(), copy_ctor.back());
+}
+
+TEST(check_assignment_operator6) {
+    List<int> list;
+    for (int i = 0; i < 5; i++) {
+        list.push_back(i);
+    }
+    // use an assignment operator here
+    List<int> copy_assignment;
+    copy_assignment = list;
+
+    // test if size, front, back match
+    ASSERT_EQUAL(list.size(), copy_assignment.size());
+    ASSERT_EQUAL(list.front(), copy_assignment.front());
+    ASSERT_EQUAL(list.back(), copy_assignment.back());
 }
 
 
@@ -722,6 +790,34 @@ TEST(check_bool_equal_and_unequal) {
     }
     ASSERT_TRUE(it1 == it2);
     ASSERT_EQUAL(*it1, *it2);
+
+    list.clear();
+}
+
+// for iterator pointing to list that only has 1 node
+TEST(check_bool_equal) {
+    List<int> list;
+    list.push_back(1);
+    List<int>::Iterator it = list.begin();
+    // it should be pointing to both list's begin and end
+    ASSERT_TRUE(it == --list.end());
+    List<int>::Iterator it2 = list.begin();
+    ASSERT_TRUE(it == it2);
+    // push front then pop back
+    list.push_front(2);
+    // 2 1
+    it++;
+    it2++;
+    ASSERT_TRUE(it == it2);
+    // points to 1
+    list.pop_back();
+    // 2
+    // it1 and it2 would be invalidated at this point
+        // because 1 is now a non-existent node
+    it = list.begin();
+    it2 = list.begin();
+    // resets it & it2 to 
+    ASSERT_TRUE(it == it2);
 }
 
     // for when it1 and it2 are pointing to different lists
@@ -747,7 +843,5 @@ TEST(check_bool_unequal) {
 
     ASSERT_TRUE(it1 != it2);
 }
-
-
 
 TEST_MAIN();
